@@ -2,18 +2,18 @@
 // register.php
 session_start();
 require 'db.php';
-require 'PHPGangsta/GoogleAuthenticator.php'; // Include the PhPGangsta library
+require 'PHPGangsta/GoogleAuthenticator.php'; 
 
 $g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); 
 
     $conn = getDbConnection();
     
-    // Generate a secret key
+    
     $secret = $g->createSecret();
 
     $stmt = $conn->prepare("INSERT INTO users (username, password, google_auth_secret) VALUES (?, ?, ?)");
@@ -21,10 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt->execute([$username, $password, $secret]);
         
-        // Generate QR code URL
+       
         $qrCodeUrl = $g->getQRCodeGoogleUrl($username, $secret, 'YourAppName');
 
-        // Store the QR code URL in the session
+        
         $_SESSION['qrCodeUrl'] = $qrCodeUrl;
 
         header("Location: verify_2fa.php");

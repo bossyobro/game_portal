@@ -1,25 +1,23 @@
 <?php
 session_start();
 require 'db.php';
-require 'PHPGangsta/GoogleAuthenticator.php'; // Include the library
+require 'PHPGangsta/GoogleAuthenticator.php'; 
 
 $g = new PHPGangsta_GoogleAuthenticator();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = $_POST['otp'];
-    $username = $_SESSION['username']; // Get the username from session
+    $username = $_SESSION['username']; 
     $conn = getDbConnection();
 
-    // Fetch the user's Google Auth secret
-    $stmt = $conn->prepare("SELECT google_auth_secret FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, google_auth_secret FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Verify the OTP
+
     if ($g->verifyCode($user['google_auth_secret'], $otp)) {
-        // If valid, log the user in
-        $_SESSION['user_id'] = $user['id']; // Set session user ID
-        $_SESSION['username'] = $username; // Set session username
+        $_SESSION['user_id'] = $user['id']; 
+        $_SESSION['username'] = $username; 
         header("Location: dashboard.php");
         exit;
     } else {
