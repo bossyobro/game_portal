@@ -5,7 +5,7 @@ function getDbConnection() {
     $host = 'localhost';
     $dbname = 'game_portal';
     $username = 'game_user';
-    $password = 'password123';
+    $password = 'key';
 
     try {
         $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
