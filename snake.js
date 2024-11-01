@@ -10,6 +10,7 @@ let intervalTime = 100; // Initial interval time
 
 // Initialize the game
 function initGame() {
+    console.log(gay);
     snake = [{ x: 9 * box, y: 9 * box }]; // Initialize snake with starting position
     direction = ""; // Reset direction
     food = spawnFood(); // Spawn initial food
