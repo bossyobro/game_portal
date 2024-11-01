@@ -14,7 +14,9 @@ if (!isset($_SESSION['user_id'])) {
     <script src="snake.js" defer></script>
 </head>
 <body>
-    <canvas id="snakeCanvas" width="400" height="400" style="border:1px solid black;"></canvas>
+    <div class="snake-game-container">
+        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+    </div>
     <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>
