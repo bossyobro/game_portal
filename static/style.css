@@ -3,7 +3,7 @@ body {
     background-color: #f4f4f4;
 }
 
-.form-container, .dashboard-container, .game-container {
+.form-container, .dashboard-container {
     width: 300px;
     margin: 50px auto;
     padding: 20px;
@@ -32,4 +32,47 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* Game container styles */
+.game-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.game {
+    width: 30%; /* Adjust as needed for your layout */
+    margin: 10px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.game:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+.game img {
+    width: 100%; /* Make images responsive */
+    height: auto;
+    border-radius: 4px;
+}
+
+.game h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333333;
+}
+
+/* Additional styling for canvas */
+canvas {
+    border: 1px solid #000;
+    display: block;
+    margin: 0 auto; /* Center the canvas */
 }
