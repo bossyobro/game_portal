@@ -59,22 +59,29 @@ body {
     flex-wrap: wrap; /* Allow wrapping */
     justify-content: center; /* Center cells */
     align-items: center; /* Center cells vertically */
-    margin: 10px; /* Adding some margin */
+    margin: 10px auto; /* Centering on the page */
 }
 
 .cell {
-    width: 30%; /* Adjust for your desired cell size */
-    height: 30%; /* Adjust for your desired cell size */
+    width: calc(33.33% - 10px); /* Responsive cell size */
+    height: calc(33.33% - 10px); /* Responsive cell size */
     border: 1px solid #ccc; /* Cell border */
     display: flex;
     justify-content: center; /* Center content in cells */
     align-items: center; /* Center content in cells */
     font-size: 4em; /* Larger font size for X and O */
     cursor: pointer; /* Pointer cursor on hover */
+    margin: 5px; /* Margin around each cell */
 }
 
 .cell:hover {
     background-color: #f0f0f0; /* Highlight cell on hover */
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
 }
 
 button {
