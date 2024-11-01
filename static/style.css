@@ -49,33 +49,36 @@ body {
     margin: 10px; /* Adding some margin */
 }
 
+
 .tic-tac-toe-game {
-    width: 400px; /* Adjusted width for the Tic Tac Toe game */
-    height: 400px; /* Adjusted height for the Tic Tac Toe game */
+    width: 400px; /* Fixed width for the Tic Tac Toe game */
+    height: 400px; /* Fixed height for the Tic Tac Toe game */
     background-color: white; /* Background for the Tic Tac Toe game */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    display: flex; /* Use flex to create a grid layout */
-    flex-wrap: wrap; /* Allow wrapping */
-    justify-content: center; /* Center cells */
-    align-items: center; /* Center cells vertically */
-    margin: 10px auto; /* Centering on the page */
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow wrapping to create the grid */
+    justify-content: center; /* Center the grid horizontally */
+    align-items: center; /* Center the grid vertically */
+    margin: 20px auto; /* Centering on the page with margin */
+    padding: 5px; /* Add padding inside the game board */
 }
 
 .cell {
-    width: calc(33.33% - 10px); /* Responsive cell size */
-    height: calc(33.33% - 10px); /* Responsive cell size */
+    width: 33.33%; /* Each cell takes up one-third of the width */
+    height: 33.33%; /* Each cell takes up one-third of the height */
     border: 1px solid #ccc; /* Cell border */
     display: flex;
     justify-content: center; /* Center content in cells */
     align-items: center; /* Center content in cells */
     font-size: 4em; /* Larger font size for X and O */
     cursor: pointer; /* Pointer cursor on hover */
-    margin: 5px; /* Margin around each cell */
+    background-color: #fafafa; /* Light background for cells */
+    transition: background-color 0.3s; /* Smooth background change */
 }
 
 .cell:hover {
-    background-color: #f0f0f0; /* Highlight cell on hover */
+    background-color: #e0e0e0; /* Highlight cell on hover */
 }
 
 a {
