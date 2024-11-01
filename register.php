@@ -4,7 +4,7 @@ session_start();
 require 'db.php';
 require 'PHPGangsta/GoogleAuthenticator.php'; // Include the library
 
-$g = new PHPGangsta_GoogleAuthenticator(); // Initialize the Google Authenticator
+$g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,8 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Generate a secret for Google Authenticator
     $secret = $g->createSecret();
 
-    // Store the secret in the session for the verification phase
+    // Store the secret and hashed password in the session for later verification
     $_SESSION['google_auth_secret'] = $secret;
+    $_SESSION['hashed_password'] = $password;
     $_SESSION['username'] = $username; // Set username in session for verification
 
     // Generate QR code URL for Google Authenticator

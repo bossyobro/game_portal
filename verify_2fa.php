@@ -8,14 +8,14 @@ $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = $_POST['otp'];
-    $username = $_SESSION['username']; // Get the username from the session
-    $secret = $_SESSION['google_auth_secret']; // Get the secret from the session
+    $username = $_SESSION['username']; // Retrieve username from session
+    $secret = $_SESSION['google_auth_secret']; // Retrieve the secret from the session
+    $password = $_SESSION['hashed_password']; // Retrieve the hashed password from the session
 
     // Verify the OTP using the secret stored in the session
     if ($g->verifyCode($secret, $otp)) {
         // If valid, save the user to the database
         $conn = getDbConnection();
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password
 
         $stmt = $conn->prepare("INSERT INTO users (username, password, google_auth_secret) VALUES (?, ?, ?)");
         try {
@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Log the user in by setting session variables
             $_SESSION['user_id'] = $conn->lastInsertId(); // Get the last inserted ID
-            $_SESSION['username'] = $username; // Set session username
 
-            // Clear the secret from session after successful registration
-            unset($_SESSION['google_auth_secret']);
-            
+            // Clear sensitive data from the session after successful registration
+            unset($_SESSION['google_auth_secret'], $_SESSION['hashed_password']);
+
+            // Redirect to the dashboard
             header("Location: dashboard.php");
             exit;
         } catch (PDOException $e) {
@@ -50,9 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <img src="<?php echo $_SESSION['qrCodeUrl']; ?>" alt="QR Code">
     <form method="POST">
         <input type="text" name="otp" required placeholder="Enter OTP">
-        <input type="hidden" name="password" value="<?php echo htmlspecialchars($_POST['password']); ?>"> <!-- Pass the password to save -->
         <button type="submit">Verify</button>
-        <?php if (isset($error)): ?>
+        <?php if ($error): ?>
             <p style="color:red;"><?php echo $error; ?></p>
         <?php endif; ?>
     </form>
