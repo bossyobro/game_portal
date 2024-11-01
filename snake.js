@@ -10,7 +10,7 @@ let intervalTime = 100; // Initial interval time
 
 // Initialize the game
 function initGame() {
-    console.log("Initializing game"); // Ensure this logs
+    console.log("Initializing game"); // Log to ensure the function is running
     snake = [{ x: 9 * box, y: 9 * box }]; // Initialize snake with starting position
     direction = ""; // Reset direction
     food = spawnFood(); // Spawn initial food
@@ -20,12 +20,16 @@ function initGame() {
     game = setInterval(draw, intervalTime); // Start the game loop
 }
 
+
 // Draw everything on the canvas
 function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    console.log("Current snake state:", snake); // Log the entire snake array for debugging
+    if (snake.length === 0) {
+        console.error("Snake is not initialized correctly:", snake);
+        return; // Stop drawing if snake is empty
+    }
 
     for (let i = 0; i < snake.length; i++) {
         ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
@@ -42,6 +46,7 @@ function draw() {
         console.error("Food is not defined:", food);
         return; // Stop drawing if food is not defined
     }
+
 
     // Move the snake
     const snakeX = snake[0].x;
