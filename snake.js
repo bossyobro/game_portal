@@ -27,12 +27,13 @@ function draw() {
     const snakeX = snake[0].x;
     const snakeY = snake[0].y;
 
+    // Update snake's position based on direction
     if (direction === "LEFT") snake[0].x -= box;
     if (direction === "UP") snake[0].y -= box;
     if (direction === "RIGHT") snake[0].x += box;
     if (direction === "DOWN") snake[0].y += box;
 
-    // Wrap-around logic
+    // Wrap-around logic: Allow snake to wrap around the canvas
     if (snake[0].x < 0) {
         snake[0].x = canvas.width - box; // Move to the right side
     } else if (snake[0].x >= canvas.width) {
@@ -62,19 +63,17 @@ function draw() {
 
 // Spawn food in a random position
 function spawnFood() {
-    let foodX = Math.floor(Math.random() * (canvas.width / box)) * box;
-    let foodY = Math.floor(Math.random() * (canvas.height / box)) * box;
+    let foodX, foodY;
+    do {
+        foodX = Math.floor(Math.random() * (canvas.width / box)) * box;
+        foodY = Math.floor(Math.random() * (canvas.height / box)) * box;
+    } while (snake.some(segment => segment.x === foodX && segment.y === foodY)); // Ensure food is not on the snake
     return { x: foodX, y: foodY };
 }
 
 // Check for collision with the snake's body
 function collision(head, body) {
-    for (let i = 0; i < body.length; i++) {
-        if (head.x === body[i].x && head.y === body[i].y) {
-            return true; // Collision detected
-        }
-    }
-    return false; // No collision
+    return body.some(segment => head.x === segment.x && head.y === segment.y); // Return true if the head collides with any body segment
 }
 
 // Control the snake's direction
