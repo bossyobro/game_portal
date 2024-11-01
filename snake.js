@@ -14,6 +14,8 @@ function initGame() {
     intervalTime = 100; // Initial interval time
     clearInterval(game); // Clear previous game loop if exists
     game = setInterval(draw, intervalTime); // Start the game loop
+
+    console.log("Game initialized:", { snake, food }); // Log initialization state
 }
 
 // Draw everything on the canvas
@@ -31,7 +33,7 @@ function draw() {
             ctx.strokeRect(snake[i].x, snake[i].y, box, box);
         }
     } else {
-        console.error("Snake is not initialized correctly.");
+        console.error("Snake is not initialized correctly:", snake);
         return; // Stop drawing if snake is not defined
     }
 
@@ -40,7 +42,7 @@ function draw() {
         ctx.fillStyle = "red";
         ctx.fillRect(food.x, food.y, box, box);
     } else {
-        console.error("Food is not defined.");
+        console.error("Food is not defined:", food);
         return; // Stop drawing if food is not defined
     }
 
