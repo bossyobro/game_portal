@@ -2,16 +2,18 @@ const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
 const box = 20; // Size of the snake and food
 let snake, direction, food, score, intervalTime;
+let game; // Declare game variable for interval
 
 // Initialize the game
 function initGame() {
+    // Set up the initial state
     snake = [{ x: 9 * box, y: 9 * box }]; // Initial position of the snake
     direction = ""; // Initial direction
     food = spawnFood(); // Initial food position
     score = 0; // Initial score
     intervalTime = 100; // Initial interval time
-    if (typeof game !== "undefined") clearInterval(game); // Clear previous game loop
-    game = setInterval(draw, intervalTime); // Game loop
+    clearInterval(game); // Clear previous game loop if exists
+    game = setInterval(draw, intervalTime); // Start the game loop
 }
 
 // Draw everything on the canvas
@@ -19,17 +21,28 @@ function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw the snake
-    for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeStyle = "darkgreen"; // Border color
-        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+    // Check if snake is defined before drawing
+    if (snake && snake.length > 0) {
+        // Draw the snake
+        for (let i = 0; i < snake.length; i++) {
+            ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
+            ctx.fillRect(snake[i].x, snake[i].y, box, box);
+            ctx.strokeStyle = "darkgreen"; // Border color
+            ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+        }
+    } else {
+        console.error("Snake is not initialized correctly.");
+        return; // Stop drawing if snake is not defined
     }
 
     // Draw the food
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, box, box);
+    if (food) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(food.x, food.y, box, box);
+    } else {
+        console.error("Food is not defined.");
+        return; // Stop drawing if food is not defined
+    }
 
     // Move the snake
     const snakeX = snake[0].x;
