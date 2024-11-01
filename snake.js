@@ -1,8 +1,12 @@
 const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
 const box = 20; // Size of the snake and food
-let snake, direction, food, score, intervalTime;
+let snake = []; // Initial snake as an empty array
+let direction = ""; // Initial direction
+let food; // Food variable
+let score = 0; // Initial score
 let game; // Declare game variable for interval
+let intervalTime = 100; // Initial interval time
 
 // Initialize the game
 function initGame() {
@@ -11,11 +15,10 @@ function initGame() {
     direction = ""; // Initial direction
     food = spawnFood(); // Initial food position
     score = 0; // Initial score
-    intervalTime = 100; // Initial interval time
-    clearInterval(game); // Clear previous game loop if exists
-    game = setInterval(draw, intervalTime); // Start the game loop
 
     console.log("Game initialized:", { snake, food }); // Log initialization state
+    clearInterval(game); // Clear previous game loop if exists
+    game = setInterval(draw, intervalTime); // Start the game loop
 }
 
 // Draw everything on the canvas
@@ -138,5 +141,5 @@ const container = document.querySelector('.snake-game-container');
 canvas.width = container.clientWidth;
 canvas.height = container.clientHeight;
 
-// Start the game
-initGame();
+// Start the game when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", initGame);
