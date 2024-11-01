@@ -1,58 +1,45 @@
-const board = Array(9).fill(null);
-let currentPlayer = "X";
+const board = ['', '', '', '', '', '', '', '', '']; // Game board
+let currentPlayer = 'X'; // Current player
+let gameActive = true; // Game state
 
-function setup() {
-    renderBoard();
-}
-
-function renderBoard() {
-    const gameBoard = document.getElementById("gameBoard");
-    gameBoard.innerHTML = "";
-    board.forEach((cell, index) => {
-        const cellDiv = document.createElement("div");
-        cellDiv.className = "cell";
-        cellDiv.innerText = cell;
-        cellDiv.addEventListener("click", () => handleCellClick(index));
-        gameBoard.appendChild(cellDiv);
-    });
-}
-
+// Function to handle cell clicks
 function handleCellClick(index) {
-    if (!board[index]) {
-        board[index] = currentPlayer;
-        if (checkWin(currentPlayer)) {
-            setTimeout(() => alert(currentPlayer + " wins!"), 100);
-            resetGame();
-        } else if (board.every(cell => cell)) {
-            setTimeout(() => alert("It's a draw!"), 100);
-            resetGame();
-        } else {
-            currentPlayer = currentPlayer === "X" ? "O" : "X"; // Switch players
-            if (currentPlayer === "O") {
-                aiMove();
-            }
-            renderBoard();
-        }
+    if (board[index] !== '' || !gameActive) return; // Ignore if cell is filled or game is over
+    board[index] = currentPlayer; // Set the cell to the current player
+    renderBoard(); // Update the board display
+
+    if (checkWinner()) {
+        gameActive = false; // Stop the game if there's a winner
+        alert(`${currentPlayer} wins!`); // Notify the winner
+        return;
+    }
+
+    // Switch player
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    if (currentPlayer === 'O') {
+        aiMove(); // AI makes its move
     }
 }
 
+// AI move function
 function aiMove() {
-    const availableCells = board.map((cell, index) => (cell === null ? index : null)).filter(index => index !== null);
-    const randomIndex = availableCells[Math.floor(Math.random() * availableCells.length)];
-    board[randomIndex] = currentPlayer;
-    if (checkWin(currentPlayer)) {
-        setTimeout(() => alert(currentPlayer + " wins!"), 100);
-        resetGame();
-    } else if (board.every(cell => cell)) {
-        setTimeout(() => alert("It's a draw!"), 100);
-        resetGame();
-    } else {
-        currentPlayer = "X"; // Switch back to player
+    let availableMoves = board.map((cell, index) => (cell === '' ? index : null)).filter(index => index !== null);
+    
+    // Simple AI logic: Random move for AI
+    let move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    if (move !== undefined) {
+        board[move] = currentPlayer;
         renderBoard();
+        if (checkWinner()) {
+            gameActive = false; // Stop the game if there's a winner
+            alert(`${currentPlayer} wins!`);
+        }
+        currentPlayer = 'X'; // Switch back to the human player
     }
 }
 
-function checkWin(player) {
+// Function to check for a winner
+function checkWinner() {
     const winningCombinations = [
         [0, 1, 2],
         [3, 4, 5],
@@ -61,15 +48,28 @@ function checkWin(player) {
         [1, 4, 7],
         [2, 5, 8],
         [0, 4, 8],
-        [2, 4, 6],
+        [2, 4, 6]
     ];
-    return winningCombinations.some(combination => combination.every(index => board[index] === player));
+
+    for (const combination of winningCombinations) {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return true; // Winning combination found
+        }
+    }
+    return false; // No winner yet
 }
 
-function resetGame() {
-    board.fill(null);
-    currentPlayer = "X";
-    renderBoard();
+// Function to render the board
+function renderBoard() {
+    const cells = document.querySelectorAll('.cell'); // Assuming you have elements with the class 'cell'
+    cells.forEach((cell, index) => {
+        cell.textContent = board[index]; // Update each cell with the board state
+    });
 }
 
-window.onload = setup;
+// Set up event listeners for each cell (assuming you have 9 cells)
+const cells = document.querySelectorAll('.cell');
+cells.forEach((cell, index) => {
+    cell.addEventListener('click', () => handleCellClick(index)); // Add click event to each cell
+});

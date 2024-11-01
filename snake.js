@@ -1,71 +1,72 @@
-let canvas, ctx, snake, food, score, direction, gameInterval;
+let canvas = document.getElementById("snakeGameCanvas");
+let ctx = canvas.getContext("2d");
 
-function setup() {
-    canvas = document.getElementById("snakeCanvas");
-    ctx = canvas.getContext("2d");
-    snake = [{ x: 5, y: 5 }];
-    food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
-    score = 0;
-    direction = { x: 0, y: 0 };
-    document.addEventListener("keydown", changeDirection);
-    gameInterval = setInterval(draw, 100);
+let box = 20; // Size of each box
+let snake = [{ x: 5 * box, y: 5 * box }]; // Initial position of the snake
+let direction = "RIGHT"; // Initial direction
+let food = { x: Math.floor(Math.random() * 15 + 1) * box, y: Math.floor(Math.random() * 15 + 1) * box }; // Initial food position
+let score = 0;
+let speed = 200; // Increase this number to slow down the snake
+
+// Event listener for key presses
+document.addEventListener("keydown", changeDirection);
+
+function changeDirection(event) {
+    if (event.keyCode === 37 && direction !== "RIGHT") { // Left arrow
+        direction = "LEFT";
+    } else if (event.keyCode === 38 && direction !== "DOWN") { // Up arrow
+        direction = "UP";
+    } else if (event.keyCode === 39 && direction !== "LEFT") { // Right arrow
+        direction = "RIGHT";
+    } else if (event.keyCode === 40 && direction !== "UP") { // Down arrow
+        direction = "DOWN";
+    }
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawSnake();
-    drawFood();
-    moveSnake();
-    checkCollision();
-}
 
-function drawSnake() {
-    ctx.fillStyle = "green";
-    for (let segment of snake) {
-        ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
-    }
-}
-
-function drawFood() {
+    // Draw the food
     ctx.fillStyle = "red";
-    ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
-}
+    ctx.fillRect(food.x, food.y, box, box);
 
-function moveSnake() {
-    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
-    snake.unshift(head);
-    if (head.x === food.x && head.y === food.y) {
+    // Draw the snake
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = (i === 0) ? "green" : "lightgreen";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+
+        // Check for collision with itself
+        if (i !== 0 && snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+            clearInterval(game); // Stop the game
+            alert("Game Over! Score: " + score);
+            document.location.reload(); // Reload the page
+        }
+    }
+
+    // Update snake position
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
+
+    if (direction === "LEFT") snakeX -= box;
+    if (direction === "UP") snakeY -= box;
+    if (direction === "RIGHT") snakeX += box;
+    if (direction === "DOWN") snakeY += box;
+
+    // Check if the snake eats the food
+    if (snakeX === food.x && snakeY === food.y) {
         score++;
-        food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
+        food = {
+            x: Math.floor(Math.random() * 15 + 1) * box,
+            y: Math.floor(Math.random() * 15 + 1) * box,
+        };
     } else {
-        snake.pop();
+        snake.pop(); // Remove the last part of the snake
     }
+
+    // Add new head
+    let newHead = { x: snakeX, y: snakeY };
+    snake.unshift(newHead); // Add new head to the snake
 }
 
-function changeDirection(event) {
-    switch (event.key) {
-        case "ArrowUp":
-            direction = { x: 0, y: -1 };
-            break;
-        case "ArrowDown":
-            direction = { x: 0, y: 1 };
-            break;
-        case "ArrowLeft":
-            direction = { x: -1, y: 0 };
-            break;
-        case "ArrowRight":
-            direction = { x: 1, y: 0 };
-            break;
-    }
-}
-
-function checkCollision() {
-    const head = snake[0];
-    if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.slice(1).some(seg => seg.x === head.x && seg.y === head.y)) {
-        clearInterval(gameInterval);
-        alert("Game Over! Your score: " + score);
-        location.reload(); // Restart the game
-    }
-}
-
-window.onload = setup;
+// Start the game loop
+let game = setInterval(draw, speed); // Set the speed of the game
