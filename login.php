@@ -13,19 +13,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
-        // Store user ID and username in the session
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $username;
+    // Debugging outputs
+    if ($user) {
+        echo "Stored hash: " . $user['password'] . "<br>";
+        echo "Entered password: " . $password . "<br>";
 
-        // Store the user's Google Authenticator secret in session for verification
-        $_SESSION['google_auth_secret'] = $user['google_auth_secret'];
+        // Verify the password
+        if (password_verify($password, $user['password'])) {
+            // Store user ID and username in the session
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $username;
 
-        // Redirect to OTP verification page
-        header("Location: verify_login.php");
-        exit;
+            // Store the user's Google Authenticator secret in session for verification
+            $_SESSION['google_auth_secret'] = $user['google_auth_secret'];
+
+            // Redirect to OTP verification page
+            header("Location: verify_login.php");
+            exit;
+        } else {
+            $error = "Password verification failed. Please check the entered password.";
+        }
     } else {
-        $error = "Invalid username or password.";
+        $error = "User not found. Please check the username.";
     }
 }
 ?>
