@@ -25,14 +25,27 @@ function handleCellClick(index) {
 function aiMove() {
     let availableMoves = board.map((cell, index) => (cell === '' ? index : null)).filter(index => index !== null);
     
-    // Simple AI logic: Random move for AI
-    let move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-    if (move !== undefined) {
+    // Simple AI logic: Prioritize winning or blocking
+    for (let i = 0; i < availableMoves.length; i++) {
+        let move = availableMoves[i];
+        board[move] = currentPlayer;
+        if (checkWinner()) {
+            renderBoard();
+            alert(`${currentPlayer} wins!`);
+            gameActive = false;
+            return;
+        }
+        board[move] = ''; // Reset the cell
+    }
+
+    // If no immediate win, make a random move
+    if (availableMoves.length > 0) {
+        let move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
         board[move] = currentPlayer;
         renderBoard();
         if (checkWinner()) {
-            gameActive = false; // Stop the game if there's a winner
             alert(`${currentPlayer} wins!`);
+            gameActive = false;
         }
         currentPlayer = 'X'; // Switch back to the human player
     }
@@ -68,7 +81,7 @@ function renderBoard() {
     });
 }
 
-// Set up event listeners for each cell (assuming you have 9 cells)
+// Set up event listeners for each cell
 const cells = document.querySelectorAll('.cell');
 cells.forEach((cell, index) => {
     cell.addEventListener('click', () => handleCellClick(index)); // Add click event to each cell
