@@ -32,6 +32,18 @@ function draw() {
     if (direction === "RIGHT") snake[0].x += box;
     if (direction === "DOWN") snake[0].y += box;
 
+    // Wrap-around logic
+    if (snake[0].x < 0) {
+        snake[0].x = canvas.width - box; // Move to the right side
+    } else if (snake[0].x >= canvas.width) {
+        snake[0].x = 0; // Move to the left side
+    }
+    if (snake[0].y < 0) {
+        snake[0].y = canvas.height - box; // Move to the bottom
+    } else if (snake[0].y >= canvas.height) {
+        snake[0].y = 0; // Move to the top
+    }
+
     // Check if the snake eats the food
     if (snake[0].x === food.x && snake[0].y === food.y) {
         score++;
@@ -40,14 +52,8 @@ function draw() {
         snake.pop(); // Remove the last segment of the snake
     }
 
-    // Check for collisions with walls or self
-    if (
-        snake[0].x < 0 || 
-        snake[0].y < 0 || 
-        snake[0].x >= canvas.width || 
-        snake[0].y >= canvas.height || 
-        collision(snake[0], snake.slice(1))
-    ) {
+    // Check for collisions with self
+    if (collision(snake[0], snake.slice(1))) {
         clearInterval(game); // Stop the game
         alert("Game Over! Your score: " + score);
         document.location.reload(); // Reload the page
