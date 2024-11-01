@@ -1,9 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
-.form-container, .dashboard-container {
+.form-container, .dashboard-container, .game-container {
     width: 300px;
     margin: 50px auto;
     padding: 20px;
@@ -34,8 +29,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Game container styles */
-.game-container {
+.games-container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -46,50 +40,55 @@ button:hover {
     width: 30%; /* Adjust as needed for your layout */
     margin: 10px;
     text-align: center;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.game:hover {
-    transform: scale(1.05); /* Slightly scale up on hover */
 }
 
 .game img {
     width: 100%; /* Make images responsive */
     height: auto;
-    border-radius: 4px;
 }
 
 .game h3 {
     margin-top: 10px;
-    font-size: 18px;
-    color: #333333;
 }
 
-/* Additional styling for canvas */
+/* Specific styles for Snake Game */
+.game-container {
+    width: 400px; /* Width of the game container */
+    margin: 50px auto;
+    text-align: center;
+}
+
 canvas {
-    border: 1px solid #000;
-    display: block;
-    margin: 0 auto; /* Center the canvas */
+    background-color: #f4f4f4; /* Background color for the game area */
+    border: 1px solid #ddd; /* Border around the canvas */
 }
 
+/* Specific styles for Tic Tac Toe Game */
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 5px;
-    margin: 20px auto;
+    grid-template-columns: repeat(3, 1fr); /* Create a 3-column grid */
+    gap: 10px; /* Space between grid items */
+    margin: 20px 0; /* Space above and below the game board */
 }
-.cell {
-    width: 100px;
-    height: 100px;
+
+#gameBoard div {
+    width: 80px; /* Width of each cell */
+    height: 80px; /* Height of each cell */
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid black;
-    font-size: 24px;
-    cursor: pointer;
+    font-size: 24px; /* Font size for the X/O */
+    background-color: #fff; /* Background color for cells */
+    border: 1px solid #ddd; /* Border for cells */
+    cursor: pointer; /* Cursor pointer for clickable cells */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+#gameBoard div:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.winner {
+    color: green; /* Color for winner text */
+    font-weight: bold; /* Bold font for winner text */
 }
