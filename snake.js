@@ -25,10 +25,7 @@ function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (snake.length === 0) {
-        console.error("Snake is not initialized correctly:", snake);
-        return; // Stop drawing if snake is empty
-    }
+   
 
     for (let i = 0; i < snake.length; i++) {
         ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
