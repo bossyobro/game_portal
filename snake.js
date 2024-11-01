@@ -25,7 +25,7 @@ function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-   
+    console.log("Current snake state:", snake); // Log the entire snake array for debugging
 
     for (let i = 0; i < snake.length; i++) {
         ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
