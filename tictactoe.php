@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="static/style.css"> <!-- Link to your CSS file -->
-    <script src="static/tictactoe.js" defer></script> <!-- Link to your JS file -->
+    <script src="tictactoe.js" defer></script> <!-- Link to your JS file -->
 </head>
 <body>
     <div class="game-container">
