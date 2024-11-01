@@ -7,7 +7,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 300px; /* Adjusted width */
+    width: 300px;
     padding: 20px;
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -19,6 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column; /* Stack items vertically */
     width: 80%; /* Adjusted width */
     padding: 20px;
     background-color: white;
@@ -36,23 +37,29 @@ body {
 }
 
 .snake-game {
-    width: 400px; /* Width for the Snake game */
-    height: 400px; /* Height for the Snake game */
+    width: 400px; /* Fixed width for the Snake game */
+    height: 400px; /* Fixed height for the Snake game */
     background-color: white; /* Background for the Snake game */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     position: relative; /* For absolute positioning of the canvas */
+    display: flex; /* Centering the canvas */
+    justify-content: center;
+    align-items: center;
+    margin: 10px; /* Adding some margin */
 }
 
 .tic-tac-toe-game {
-    width: 300px; /* Width for the Tic Tac Toe game */
-    height: 300px; /* Height for the Tic Tac Toe game */
+    width: 400px; /* Adjusted width for the Tic Tac Toe game */
+    height: 400px; /* Adjusted height for the Tic Tac Toe game */
     background-color: white; /* Background for the Tic Tac Toe game */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex; /* Use flex to create a grid layout */
     flex-wrap: wrap; /* Allow wrapping */
     justify-content: center; /* Center cells */
+    align-items: center; /* Center cells vertically */
+    margin: 10px; /* Adding some margin */
 }
 
 .cell {
@@ -62,7 +69,7 @@ body {
     display: flex;
     justify-content: center; /* Center content in cells */
     align-items: center; /* Center content in cells */
-    font-size: 2em; /* Larger font size for X and O */
+    font-size: 4em; /* Larger font size for X and O */
     cursor: pointer; /* Pointer cursor on hover */
 }
 
