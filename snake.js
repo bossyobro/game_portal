@@ -10,12 +10,11 @@ let intervalTime = 100; // Initial interval time
 
 // Initialize the game
 function initGame() {
-    console.log("cook");
+    console.log("Initializing game"); // Ensure this logs
     snake = [{ x: 9 * box, y: 9 * box }]; // Initialize snake with starting position
     direction = ""; // Reset direction
     food = spawnFood(); // Spawn initial food
     score = 0; // Reset score
-
     console.log("Game initialized:", { snake, food }); // Log initialization state
     clearInterval(game); // Clear previous game loop if exists
     game = setInterval(draw, intervalTime); // Start the game loop
@@ -26,18 +25,16 @@ function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Check if snake is defined and has elements before drawing
-    if (Array.isArray(snake) && snake.length > 0) {
-        // Draw the snake
-        for (let i = 0; i < snake.length; i++) {
-            ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
-            ctx.fillRect(snake[i].x, snake[i].y, box, box);
-            ctx.strokeStyle = "darkgreen"; // Border color
-            ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-        }
-    } else {
+    if (snake.length === 0) {
         console.error("Snake is not initialized correctly:", snake);
-        return; // Stop drawing if snake is not defined
+        return; // Stop drawing if snake is empty
+    }
+
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = "darkgreen"; // Border color
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
     }
 
     // Draw the food
