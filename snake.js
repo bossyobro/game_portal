@@ -1,7 +1,7 @@
 const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
 const box = 20; // Size of the snake and food
-let snake = []; // Initial snake as an empty array
+let snake = []; // Initialize snake as an empty array
 let direction = ""; // Initial direction
 let food; // Food variable
 let score = 0; // Initial score
@@ -10,11 +10,10 @@ let intervalTime = 100; // Initial interval time
 
 // Initialize the game
 function initGame() {
-    // Set up the initial state
-    snake = [{ x: 9 * box, y: 9 * box }]; // Initial position of the snake
-    direction = ""; // Initial direction
-    food = spawnFood(); // Initial food position
-    score = 0; // Initial score
+    snake = [{ x: 9 * box, y: 9 * box }]; // Initialize snake with starting position
+    direction = ""; // Reset direction
+    food = spawnFood(); // Spawn initial food
+    score = 0; // Reset score
 
     console.log("Game initialized:", { snake, food }); // Log initialization state
     clearInterval(game); // Clear previous game loop if exists
@@ -26,8 +25,8 @@ function draw() {
     ctx.fillStyle = "#f4f4f4"; // Background color
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Check if snake is defined before drawing
-    if (snake && snake.length > 0) {
+    // Check if snake is defined and has elements before drawing
+    if (Array.isArray(snake) && snake.length > 0) {
         // Draw the snake
         for (let i = 0; i < snake.length; i++) {
             ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head vs. body color
@@ -74,7 +73,6 @@ function draw() {
     // Check if the snake eats the food
     if (snake[0].x === food.x && snake[0].y === food.y) {
         score++;
-        updateSpeed(); // Update speed based on score
         food = spawnFood(); // Respawn food
     } else {
         snake.pop(); // Remove the last segment of the snake
@@ -116,15 +114,6 @@ function directionControl(event) {
     if (event.keyCode === 40 && direction !== "UP") direction = "DOWN"; // Down arrow
 }
 
-// Update speed based on score
-function updateSpeed() {
-    if (score % 5 === 0 && score !== 0) { // Increase speed every 5 points
-        clearInterval(game);
-        intervalTime -= 10; // Decrease interval time
-        game = setInterval(draw, intervalTime); // Restart game loop with new speed
-    }
-}
-
 // Handle game over
 function gameOver() {
     clearInterval(game); // Stop the game
@@ -135,11 +124,6 @@ function gameOver() {
         document.location.reload(); // Reload the page
     }
 }
-
-// Set canvas size to fit the container
-const container = document.querySelector('.snake-game-container');
-canvas.width = container.clientWidth;
-canvas.height = container.clientHeight;
 
 // Start the game when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", initGame);
