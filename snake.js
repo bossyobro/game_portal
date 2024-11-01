@@ -118,9 +118,10 @@ function gameOver() {
     }
 }
 
-// Set canvas size to be responsive
-canvas.width = window.innerWidth * 0.8; // 80% of the window width
-canvas.height = window.innerHeight * 0.8; // 80% of the window height
+// Set canvas size to fit the container
+const container = document.querySelector('.snake-game-container');
+canvas.width = container.clientWidth;
+canvas.height = container.clientHeight;
 
 // Start the game
 initGame();
