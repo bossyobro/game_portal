@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="game-container">
             <div class="game">
                 <h3>Snake</h3>
-                <a href="snake.php"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
+                <a href="snake.html"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
             </div>
  <div class="game">
                 <h3>Tic Tac Toe</h3>
