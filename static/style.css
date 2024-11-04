@@ -1,103 +1,84 @@
 /* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #e9ecef;
     margin: 0;
     padding: 0;
     color: #333; /* Improved text color for better readability */
 }
 
 /* Container Styles */
-.container {
+.container, .dashboard-container, .form-container {
     max-width: 1200px; /* Set a max width for larger screens */
     margin: 0 auto; /* Center the container */
     padding: 20px; /* Add padding for spacing */
+    background-color: #ffffff; /* White background for content */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded corners */
 }
 
-/* Form and Dashboard Containers */
-.form-container,
-.dashboard-container,
-.snake-game-container,
-.tic-tac-toe-game {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 20px auto;
-    padding: 20px;
-    width: 90%; /* Make it responsive */
-    max-width: 600px; /* Set a max width */
-}
-
-/* Game Container */
-.game-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
-    width: 100%;
-    padding: 20px;
-}
-
-/* Game Specific Styles */
-.snake-game-container,
-.tic-tac-toe-game {
-    width: 100%; /* Full width for responsiveness */
-    max-width: 400px; /* Set a max width */
-    height: 400px; /* Fixed height */
-    margin: 10px; /* Add margin for spacing */
-}
-
-#snakeCanvas {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    border-radius: 8px;
-}
-
-/* Tic Tac Toe Game Board */
-#gameBoard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    width: 100%;
-    height: 100%;
-}
-
-/* Game Cell Styles */
-.cell {
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4em;
-    cursor: pointer;
-    background-color: #fafafa;
-    transition: background-color 0.3s, transform 0.2s; /* Added transform for hover effect */
-}
-
-.cell:hover {
-    background-color: #e0e0e0;
-    transform: scale(1.05); /* Slightly scale up on hover */
-}
-
-/* Link Styles */
-a {
-    display: block;
+/* Header Styles */
+h1, h2 {
+    color: #007bff; /* Primary color for headings */
     text-align: center;
-    margin-top: 20px;
+}
+
+/* Navigation Styles */
+nav {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+nav a {
+    margin: 0 15px;
     text-decoration: none; /* Remove underline */
     color: #007bff; /* Link color */
+    font-weight: bold;
+    transition: color 0.3s; /* Transition for hover effect */
 }
 
-a:hover {
-    text-decoration: underline; /* Underline on hover */
+nav a:hover {
+    color: #0056b3; /* Darker shade on hover */
 }
 
-/* Button Styles */
+/* Game and Profile Styles */
+.game-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    justify-content: space-around; /* Space games evenly */
+}
+
+.game {
+    width: 30%; /* Each game takes up 30% of the container */
+    margin: 10px 0; /* Margin for spacing */
+    text-align: center;
+    transition: transform 0.3s; /* Transition for hover effect */
+}
+
+.game img {
+    width: 100%; /* Responsive image */
+    border-radius: 10px; /* Rounded corners for images */
+}
+
+.game:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+/* Form Styles */
+.form-container {
+    padding: 30px; /* Extra padding for forms */
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%; /* Full width for inputs */
+    padding: 10px;
+    margin: 10px 0; /* Margin for spacing */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
 button {
     background-color: #007bff;
     color: white;
@@ -113,15 +94,34 @@ button:hover {
     transform: scale(1.05); /* Slightly scale up on hover */
 }
 
+/* Table Styles */
+table {
+    width: 100%; /* Full width for tables */
+    border-collapse: collapse; /* Remove space between cells */
+    margin-top: 20px; /* Margin for spacing */
+}
+
+th, td {
+    border: 1px solid #ccc; /* Border for table cells */
+    padding: 10px; /* Padding for table cells */
+    text-align: left; /* Align text to the left */
+}
+
+th {
+    background-color: #f8f9fa; /* Light gray background for headers */
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .game-container {
-        flex-direction: column; /* Stack games vertically on smaller screens */
-        align-items: center; /* Center align items */
+    .game {
+        width: 100%; /* Full width on smaller screens */
     }
 
-    .snake-game-container,
-    .tic-tac-toe-game {
-        max-width: 90%; /* Full width on smaller screens */
+    nav {
+        flex-direction: column; /* Stack navigation links vertically */
+    }
+
+    nav a {
+        margin: 5px 0; /* Margin for spacing */
     }
 }
