@@ -1,4 +1,4 @@
-const canvas = document.getElementById("gameCanvas");
+const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
 
 const boxSize = 20;
