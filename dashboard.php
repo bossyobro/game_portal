@@ -18,11 +18,11 @@ if (!isset($_SESSION['user_id'])) {
         <div class="game-container">
             <div class="game">
                 <h3>Snake</h3>
-                <a href="snake.php"><img src="static/snake.png" alt="Snake Game"></a>
+                <a href="snake.php"><img src="static/Images/Snake.jpg" alt= "Snake Game"></a>
             </div>
             <div class="game">
                 <h3>Tic Tac Toe</h3>
-                <a href="tictactoe.php"><img src="static/tictactoe.png" alt="Tic Tac Toe Game"></a>
+                <a href="tictactoe.php"><img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game"></a>
             </div>
             <!-- Add more games here -->
         </div>
