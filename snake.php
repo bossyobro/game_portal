@@ -13,13 +13,13 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link rel="stylesheet" href="static/style.css">
-    <script src="snake.js" defer></script> <!-- Link to the existing snake.js file -->
+    <script src="snake.js" defer></script> 
 </head>
 <body>
     <h1>Snake Game</h1>
     <div class="snake-game-container">
-        <canvas id="snakeCanvas" width="400" height="400"></canvas> <!-- The canvas for the snake game -->
+        <canvas id="snakeCanvas" width="400" height="400"></canvas> 
     </div>
-    <a href="dashboard.php">Back to Dashboard</a> <!-- Link to navigate back to the dashboard -->
+    <a href="dashboard.php">Back to Dashboard</a> 
 </body>
 </html>
