@@ -1,6 +1,6 @@
 const canvas = document.getElementById("snakeCanvas");
 if (!canvas) {
-    console.log("canvas is not")
+    console.log("canvas is no")
 }
 const ctx = canvas.getContext("2d");
 

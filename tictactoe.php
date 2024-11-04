@@ -32,3 +32,4 @@ if (!isset($_SESSION['user_id'])) {
     <a href="dashboard.php">Back to Dashboard</a>
 </body>
 </html>
+

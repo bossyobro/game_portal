@@ -14,10 +14,16 @@ $user_id = $_SESSION['user_id'];
 $score = intval($_POST['score']);
 
 // Insert the score into the scores table
-$conn = getDbConnection();
-$stmt = $conn->prepare("INSERT INTO scores (user_id, score) VALUES (?, ?)");
-$stmt->execute([$user_id, $score]);
-
-// Respond with a JSON message (useful if called via AJAX)
-echo json_encode(["status" => "success", "message" => "Score added successfully."]);
+try {
+    $conn = getDbConnection();
+    $stmt = $conn->prepare("INSERT INTO scores (user_id, score) VALUES (?, ?)");
+    $stmt->execute([$user_id, $score]);
+    
+    // Respond with a JSON message (useful if called via AJAX)
+    echo json_encode(["status" => "success", "message" => "Score added successfully."]);
+} catch (PDOException $e) {
+    // Log the error and respond with an error message
+    error_log("Database error: " . $e->getMessage());
+    echo json_encode(["status" => "error", "message" => "Failed to add score."]);
+}
 ?>

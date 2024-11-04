@@ -1,74 +1,64 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333; /* Improved text color for better readability */
 }
 
-.form-container {
+/* Container Styles */
+.container {
+    max-width: 1200px; /* Set a max width for larger screens */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add padding for spacing */
+}
+
+/* Form and Dashboard Containers */
+.form-container,
+.dashboard-container,
+.snake-game-container,
+.tic-tac-toe-game {
     display: flex;
+    flex-direction: column; /* Stack items vertically */
     justify-content: center;
     align-items: center;
-    width: 300px;
-    padding: 20px;
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     margin: 20px auto;
-}
-
-.dashboard-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 80%;
     padding: 20px;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 20px auto;
+    width: 90%; /* Make it responsive */
+    max-width: 600px; /* Set a max width */
 }
 
+/* Game Container */
 .game-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
     width: 100%;
     padding: 20px;
 }
 
-/* Snake Game Container */
-.snake-game-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    width: 400px;
-    height: 400px;
-    margin: 20px auto;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Snake Game Canvas */
-#snakeCanvas {
-    width: 100%; /* Make the canvas responsive within its container */
-    height: 100%; /* Fill the container's height */
-    background-color: #000; /* Black background for contrast */
-    border-radius: 8px;
-}
-
+/* Game Specific Styles */
+.snake-game-container,
 .tic-tac-toe-game {
-    width: 400px;
-    height: 400px;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto;
+    width: 100%; /* Full width for responsiveness */
+    max-width: 400px; /* Set a max width */
+    height: 400px; /* Fixed height */
+    margin: 10px; /* Add margin for spacing */
 }
 
+#snakeCanvas {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border-radius: 8px;
+}
+
+/* Tic Tac Toe Game Board */
 #gameBoard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -77,6 +67,7 @@ body {
     height: 100%;
 }
 
+/* Game Cell Styles */
 .cell {
     border: 1px solid #ccc;
     display: flex;
@@ -85,26 +76,52 @@ body {
     font-size: 4em;
     cursor: pointer;
     background-color: #fafafa;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s; /* Added transform for hover effect */
 }
 
 .cell:hover {
     background-color: #e0e0e0;
+    transform: scale(1.05); /* Slightly scale up on hover */
 }
 
+/* Link Styles */
 a {
     display: block;
     text-align: center;
     margin-top: 20px;
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Link color */
 }
 
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Button Styles */
 button {
     background-color: #007bff;
     color: white;
     border: none;
+    padding: 10px 20px; /* Added padding for better button size */
+    border-radius: 5px; /* Rounded corners */
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Added transition for hover effect */
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column; /* Stack games vertically on smaller screens */
+        align-items: center; /* Center align items */
+    }
+
+    .snake-game-container,
+    .tic-tac-toe-game {
+        max-width: 90%; /* Full width on smaller screens */
+    }
 }
