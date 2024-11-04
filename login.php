@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "Password verification failed. Please check the entered password.";
         }
     } else {
-        $error = "User not found. Please check the username.";
+        $error = "User  not found. Please check the username.";
     }
 }
 ?>
@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p style="color:red;"><?php echo $error; ?></p>
             <?php endif; ?>
         </form>
+        <p>Don't have an account? <a href="register.php">Register here</a>.</p>
     </div>
 </body>
 </html>

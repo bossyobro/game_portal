@@ -1,62 +1,50 @@
 <?php
-// login.php
+// register.php
 session_start();
 require 'db.php';
+require 'PHPGangsta/GoogleAuthenticator.php'; // Include the library
 
+$g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password
 
-    $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Generate a secret for Google Authenticator
+    $secret = $g->createSecret();
 
-    // Debugging outputs
-    if ($user) {
-        echo "Stored hash: " . $user['password'] . "<br>";
-        echo "Entered password: " . $password . "<br>";
+    // Store the secret and hashed password in the session for later verification
+    $_SESSION['google_auth_secret'] = $secret;
+    $_SESSION['hashed_password'] = $password;
+    $_SESSION['username'] = $username; // Set username in session for verification
 
-        // Verify the password
-        if (password_verify($password, $user['password'])) {
-            // Store user ID and username in the session
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $username;
+    // Generate QR code URL for Google Authenticator
+    $_SESSION['qrCodeUrl'] = $g->getQRCodeGoogleUrl($username, $secret);
 
-            // Store the user's Google Authenticator secret in session for verification
-            $_SESSION['google_auth_secret'] = $user['google_auth_secret'];
-
-            // Redirect to OTP verification page
-            header("Location: verify_login.php");
-            exit;
-        } else {
-            $error = "Password verification failed. Please check the entered password.";
-        }
-    } else {
-        $error = "User  not found. Please check the username.";
-    }
+    // Redirect to the OTP verification page
+    header("Location: verify_2fa.php");
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <div class="form-container">
         <form method="POST" action="">
-            <h2>Login</h2>
+            <h2>Register</h2>
             <input type="text" name="username" required placeholder="Username">
             <input type="password" name="password" required placeholder="Password">
-            <button type="submit">Login</button>
+            <button type="submit">Register</button>
             <?php if ($error): ?>
                 <p style="color:red;"><?php echo $error; ?></p>
             <?php endif; ?>
         </form>
-        <p>Don't have an account? <a href="register.php">Register here</a>.</p>
     </div>
 </body>
 </html>
