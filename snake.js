@@ -1,7 +1,10 @@
 const canvas = document.getElementById("snakeCanvas");
+if (!canvas) {
+    console.log("canvas is not")
+}
 const ctx = canvas.getContext("2d");
 
-const boxSize = 20;
+const boxSize = 20; 
 const canvasSize = canvas.width;
 let snake = [{ x: boxSize * 5, y: boxSize * 5 }];
 let direction = "RIGHT";
