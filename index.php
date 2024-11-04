@@ -15,7 +15,7 @@ session_start();
     <header>
         <nav class="main-nav">
             <div class="logo">
-                <img src="static/images/logo.png" alt="Game Portal Logo">
+                <img src="static/Images/logo.png" alt="Game Portal Logo">
                 <span>Game Portal</span>
             </div>
             <ul class="nav-links">
@@ -44,13 +44,13 @@ session_start();
             <h2>Featured Games</h2>
             <div class="game-grid">
                 <div class="game-card">
-                    <img src="static/images/snake.jpg" alt="Snake Game">
+                    <img src="static/Images/snake.jpg" alt="Snake Game">
                     <h3>Snake</h3>
                     <p>Classic snake game with a modern twist!</p>
                     <a href="snake.html" class="btn">Play Now</a>
                 </div>
                 <div class="game-card">
-                    <img src="static/images/tictactoe.jpg" alt="Tic Tac Toe Game">
+                    <img src="static/Images/tictactoe.jpg" alt="Tic Tac Toe Game">
                     <h3>Tic Tac Toe</h3>
                     <p>Challenge your friends or AI in this timeless game!</p>
                     <a href="tictactoe.php" class="btn">Play Now</a>
