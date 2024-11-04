@@ -27,7 +27,7 @@ if (!isset($_SESSION['user_id'])) {
             </div>
  <div class="game">
                 <h3>Tic Tac Toe</h3>
-                <a href="tic_tac_toe.php"><img src="static/Images/TicTacToe.jpg" alt="Tic Tac Toe Game"></a>
+                <a href="tictactoe.php"><img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game"></a>
             </div>
             <!-- Add more games here -->
         </div>
