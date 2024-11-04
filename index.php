@@ -50,7 +50,7 @@ session_start();
                     <a href="snake.html" class="btn">Play Now</a>
                 </div>
                 <div class="game-card">
-                    <img src="static/Images/TicTacToe.jpg" alt="Tic Tac Toe Game">
+                    <img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game">
                     <h3>Tic Tac Toe</h3>
                     <p>Challenge your friends or AI in this timeless game!</p>
                     <a href="tictactoe.php" class="btn">Play Now</a>
