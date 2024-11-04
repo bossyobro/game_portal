@@ -15,18 +15,22 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="dashboard-container">
         <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="profile.php">Profile</a>
+            <a href="logout.php">Logout</a>
+        </nav>
         <div class="game-container">
             <div class="game">
                 <h3>Snake</h3>
-                <a href="snake.php"><img src="static/Images/Snake.jpg" alt= "Snake Game"></a>
+                <a href="snake.php"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
             </div>
-            <div class="game">
+ <div class="game">
                 <h3>Tic Tac Toe</h3>
-                <a href="tictactoe.php"><img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game"></a>
+                <a href="tic_tac_toe.php"><img src="static/Images/TicTacToe.jpg" alt="Tic Tac Toe Game"></a>
             </div>
             <!-- Add more games here -->
         </div>
-        <a href="logout.php">Logout</a>
     </div>
 </body>
 </html>
