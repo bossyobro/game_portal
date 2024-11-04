@@ -12,84 +12,87 @@ body {
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin: 20px auto; /* Centering on the page */
+    margin: 20px auto;
 }
 
 .dashboard-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Stack items vertically */
-    width: 80%; /* Adjusted width */
+    flex-direction: column;
+    width: 80%;
     padding: 20px;
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin: 20px auto; /* Centering on the page */
+    margin: 20px auto;
 }
 
 .game-container {
     display: flex;
-    justify-content: space-around; /* Space games evenly */
+    justify-content: space-around;
     align-items: center;
-    width: 100%; /* Full width of the parent */
+    width: 100%;
     padding: 20px;
 }
 
+/* Snake Game Container */
 .snake-game-container {
-    width: 400px; /* Fixed width for the Snake game */
-    height: 400px; /* Fixed height for the Snake game */
-    background-color: white; /* Background for the game container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; /* Rounded corners for the container */
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center canvas horizontally */
-    align-items: center; /* Center canvas vertically */
-    margin: 20px auto; /* Centering on the page */
-    border: 2px solid #000; /* Solid border around the game container */
+    border-radius: 8px;
 }
 
+/* Snake Game Canvas */
 #snakeCanvas {
-    background-color: #fafafa; /* Background color for the canvas */
-    border: none; /* Remove default canvas border */
-    border-radius: 4px; /* Slightly rounded corners for the canvas */
+    width: 100%; /* Make the canvas responsive within its container */
+    height: 100%; /* Fill the container's height */
+    background-color: #000; /* Black background for contrast */
+    border-radius: 8px;
 }
 
 .tic-tac-toe-game {
-    width: 400px; /* Fixed width for the Tic Tac Toe game */
-    height: 400px; /* Fixed height for the Tic Tac Toe game */
-    background-color: white; /* Background for the Tic Tac Toe game */
+    width: 400px;
+    height: 400px;
+    background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center the grid horizontally */
-    align-items: center; /* Center the grid vertically */
-    margin: 20px auto; /* Centering on the page with margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
 }
 
 #gameBoard {
-    display: grid; /* Use CSS Grid for layout */
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    grid-template-rows: repeat(3, 1fr); /* 3 rows */
-    width: 100%; /* Use full width of the container */
-    height: 100%; /* Use full height of the container */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
 }
 
 .cell {
-    border: 1px solid #ccc; /* Cell border */
+    border: 1px solid #ccc;
     display: flex;
-    justify-content: center; /* Center content in cells */
-    align-items: center; /* Center content in cells */
-    font-size: 4em; /* Larger font size for X and O */
-    cursor: pointer; /* Pointer cursor on hover */
-    background-color: #fafafa; /* Light background for cells */
-    transition: background-color 0.3s; /* Smooth background change */
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: background-color 0.3s;
 }
 
 .cell:hover {
-    background-color: #e0e0e0; /* Highlight cell on hover */
+    background-color: #e0e0e0;
 }
-a{
+
+a {
     display: block;
     text-align: center;
     margin-top: 20px;
