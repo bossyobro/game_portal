@@ -15,7 +15,7 @@ session_start();
     <header>
         <nav class="main-nav">
             <div class="logo">
-                <img src="static/Images/logo.png" alt="Game Portal Logo">
+                <img src="static/Images/Game_Portal_Logo.jpg" alt="Game Portal Logo">
                 <span>Game Portal</span>
             </div>
             <ul class="nav-links">
