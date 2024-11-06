@@ -9,12 +9,43 @@ body {
 }
 
 /* Container Styles */
-.container, .dashboard-container, .form-container {
+.container, .form-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #2d2d2d;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2d2d2d;
+    background-image: url('static/Images/Game_Portal_Logo.jpg'); /* Add the logo as background */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-blend-mode: overlay; /* This will blend the logo with the background color */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    position: relative; /* For pseudo-element */
+}
+
+.dashboard-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(45, 45, 45, 0.9); /* Adjust the opacity as needed */
     border-radius: 10px;
 }
 
