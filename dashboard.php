@@ -14,22 +14,28 @@ if (!isset($_SESSION['user_id'])) {
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="profile.php">Profile</a>
-            <a href="logout.php">Logout</a>
-        </nav>
+        <header class="dashboard-header">
+            <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
+            <nav class="dashboard-nav">
+                <a href="index.php">Home</a>
+                <a href="profile.php">Profile</a>
+                <a href="logout.php">Logout</a>
+            </nav>
+        </header>
+
         <div class="game-container">
-            <div class="game">
-                <h3>Snake</h3>
-                <a href="snake.html"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
+            <h3>Featured Games</h3>
+            <div class="game-grid">
+                <div class="game-card">
+                    <h4>Snake</h4>
+                    <a href="snake.html"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
+                </div>
+                <div class="game-card">
+                    <h4>Tic Tac Toe</h4>
+                    <a href="tictactoe.php"><img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game"></a>
+                </div>
+                <!-- Add more games here -->
             </div>
- <div class="game">
-                <h3>Tic Tac Toe</h3>
-                <a href="tictactoe.php"><img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game"></a>
-            </div>
-            <!-- Add more games here -->
         </div>
     </div>
 </body>

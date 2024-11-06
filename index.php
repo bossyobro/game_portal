@@ -63,26 +63,10 @@ session_start();
             <h2>About Game Portal</h2>
             <p>Game Portal is your one-stop destination for online gaming fun. We offer a variety of games to suit all tastes, from classic puzzles to modern multiplayer experiences. Join our community today and start your gaming adventure!</p>
         </section>
-
-        <section class="testimonials">
-            <h2>What Our Players Say</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial">
-                    <img src="static/images/user1.jpg" alt="User 1">
-                    <p>"Game Portal has the best collection of online games. I'm hooked!"</p>
-                    <span>- Jane D.</span>
-                </div>
-                <div class="testimonial">
-                    <img src="static/images/user2.jpg" alt="User 2">
-                    <p>"I love competing on the leaderboards. It's so much fun!"</p>
-                    <span>- John S.</span>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
-        <p>&copy; 2023 Game Portal. All rights reserved.</p>
+        <p>&copy; 2024-2025 Game Portal. All rights reserved.</p>
         <div class="social-links">
             <a href="#"><i class="fab fa-facebook"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
