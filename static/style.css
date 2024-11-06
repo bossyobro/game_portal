@@ -23,7 +23,7 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #2d2d2d;
-    background-image: url('static/Images/Game_Portal_Logo.jpg'); /* Add the logo as background */
+    background-image: url('/static/Images/Game_Portal_Logo.jpg'); /* Add the logo as background */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -304,18 +304,6 @@ footer {
 }
 .social-links a:hover {
     color: #00b4d8;
-}
-
-
-
-/* New Dashboard Styles */
-.dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #2d2d2d;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
 }
 
 .dashboard-header {
