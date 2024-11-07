@@ -20,10 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<form method="POST">
-    <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
-    <button type="submit">Update Email</button>
-</form>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,5 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="logout.php">Logout</a>
         </nav>
     </div>
+    <form method="POST">
+    <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
+    <button type="submit">Update Email</button>
+</form>
 </body>
 </html>
