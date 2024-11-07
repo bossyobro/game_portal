@@ -2,25 +2,25 @@
 // verify_2fa.php
 session_start();
 require 'db.php';
-require 'PHPGangsta/GoogleAuthenticator.php'; // Include the library
+require 'PHPGangsta/GoogleAuthenticator.php';
 
 $g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
 
+// Check if the QR code URL exists in session
+$qrCodeUrl = isset($_SESSION['qrCodeUrl']) ? $_SESSION['qrCodeUrl'] : null;
+$secret = isset($_SESSION['google_auth_secret']) ? $_SESSION['google_auth_secret'] : null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = $_POST['otp'];
 
-    // Get the Google Authenticator secret from the session
     if (!isset($_SESSION['google_auth_secret'])) {
         header("Location: login.php");
         exit;
     }
-    $secret = $_SESSION['google_auth_secret'];
-
-    // Verify the OTP using the secret stored in the session
+    
     if ($g->verifyCode($secret, $otp)) {
-        // If valid, log the user in by setting session variables
-        $_SESSION['authenticated'] = true; // Set an authenticated session variable
+        $_SESSION['authenticated'] = true;
         header("Location: dashboard.php");
         exit;
     } else {
@@ -36,13 +36,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <h2>Enter the OTP from Google Authenticator</h2>
-    <form method="POST">
-        <input type="text" name="otp" required placeholder="Enter OTP">
-        <button type="submit">Verify</button>
-        <?php if ($error): ?>
-            <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+    <div class="form-container">
+        <?php if ($qrCodeUrl): ?>
+            <h2>Scan this QR Code with Google Authenticator</h2>
+            <img src="<?php echo htmlspecialchars($qrCodeUrl); ?>" alt="QR Code">
+            <p>Or enter this code manually: <?php echo htmlspecialchars($secret); ?></p>
         <?php endif; ?>
-    </form>
+        
+        <h2>Enter the OTP from Google Authenticator</h2>
+        <form method="POST">
+            <input type="text" name="otp" required placeholder="Enter OTP">
+            <button type="submit">Verify</button>
+            <?php if ($error): ?>
+                <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+            <?php endif; ?>
+        </form>
+    </div>
 </body>
 </html>

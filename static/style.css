@@ -8,6 +8,19 @@ body {
     line-height: 1.6;
 }
 
+.form-container img {
+    display: block;
+    margin: 20px auto;
+    max-width: 200px;
+    height: auto;
+}
+
+.form-container p {
+    text-align: center;
+    margin: 20px 0;
+    word-break: break-all;
+}
+
 /* Container Styles */
 .container, .form-container {
     max-width: 1200px;
