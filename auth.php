@@ -1,5 +1,5 @@
-// auth.php
 <?php
+// auth.php
 function checkAuth() {
     if (!isset($_SESSION['user_id']) || 
         !isset($_SESSION['authenticated']) || 
