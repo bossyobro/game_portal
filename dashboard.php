@@ -28,7 +28,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['authenticated'])) {
             <div class="game-grid">
                 <div class="game-card">
                     <h4>Snake</h4>
-                    <a href="snake.html"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
+                    <a href="snake.php"><img src="static/Images/Snake.jpg" alt="Snake Game"></a>
                 </div>
                 <div class="game-card">
                     <h4>Tic Tac Toe</h4>

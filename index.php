@@ -47,7 +47,7 @@ session_start();
                     <img src="static/Images/Snake.jpg" alt="Snake Game">
                     <h3>Snake</h3>
                     <p>Classic snake game with a modern twist!</p>
-                    <a href="snake.html" class="btn">Play Now</a>
+                    <a href="snake.php" class="btn">Play Now</a>
                 </div>
                 <div class="game-card">
                     <img src="static/Images/TicTacToe.png" alt="Tic Tac Toe Game">
