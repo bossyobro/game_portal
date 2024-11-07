@@ -14,15 +14,27 @@ $secret = isset($_SESSION['google_auth_secret']) ? $_SESSION['google_auth_secret
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = $_POST['otp'];
 
-    if (!isset($_SESSION['google_auth_secret'])) {
+    if (!isset($_SESSION['google_auth_secret']) || !isset($_SESSION['user_id'])) {
         header("Location: login.php");
         exit;
     }
     
     if ($g->verifyCode($secret, $otp)) {
-        $_SESSION['authenticated'] = true;
-        header("Location: dashboard.php");
-        exit;
+        try {
+            $conn = getDbConnection();
+            
+            // Update user's status if needed
+            $stmt = $conn->prepare("UPDATE users SET is_verified = 1 WHERE id = ?");
+            $stmt->execute([$_SESSION['user_id']]);
+            
+            // Set authenticated session
+            $_SESSION['authenticated'] = true;
+            
+            header("Location: dashboard.php");
+            exit;
+        } catch (PDOException $e) {
+            $error = "Verification failed: " . $e->getMessage();
+        }
     } else {
         $error = "Invalid OTP.";
     }
