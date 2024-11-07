@@ -16,4 +16,4 @@ function getDbConnection() {
         exit;
     }
 }
-?>
+
