@@ -88,10 +88,6 @@ function draw() {
     snake.forEach(segment => {
         ctx.fillRect(segment.x, segment.y, boxSize, boxSize);
     });
-
-    ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("Score: " + score, 10, 20);
 }
 
 function spawnFood() {

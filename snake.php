@@ -18,9 +18,9 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['authenticated'])) {
 <body>
     <div class="game-wrapper">
         <h1>Snake Game</h1>
+        <div id="score">Score: 0</div>
         <div class="snake-game-container">
             <canvas id="snakeCanvas" width="400" height="400"></canvas>
-            <div id="score">Score: 0</div>
         </div>
         <div class="game-controls">
             <a href="dashboard.php" class="btn">Back to Dashboard</a>
