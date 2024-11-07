@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verify the OTP using the secret stored in the session
     if ($g->verifyCode($secret, $otp)) {
+        $_SESSION['authenticated'] = true;
         // If valid, log the user in by setting session variables
         header("Location: dashboard.php");
         exit;
