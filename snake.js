@@ -11,6 +11,32 @@ function sendScore(score) {
     .catch((error) => console.error('Error:', error));
 }
 
+function gameOver() {
+    const finalScore = score;
+    
+    // Send score to server
+    fetch('handle_game.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            session_id: session_id,
+            game_id: 1,
+            score: finalScore
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.achievements) {
+            alert('New achievements unlocked: ' + data.achievements.join(', '));
+        }
+        // Reload leaderboard
+        location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 
 const canvas = document.getElementById("snakeCanvas");
 if (!canvas) {

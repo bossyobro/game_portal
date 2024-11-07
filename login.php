@@ -2,41 +2,41 @@
 // login.php
 session_start();
 require 'db.php';
+require 'auth.php';
 
-$error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    try {
+        validateCSRFToken($_POST['csrf_token']);
+        
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = $_POST['password'];
 
-    $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (empty($username) || empty($password)) {
+            throw new Exception('All fields are required');
+        }
 
-    // Debugging outputs
-    if ($user) {
-        echo "Stored hash: " . $user['password'] . "<br>";
-        echo "Entered password: " . $password . "<br>";
+        $conn = getDbConnection();
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verify the password
-        if (password_verify($password, $user['password'])) {
-            // Store user ID and username in the session
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
             $_SESSION['authenticated'] = false;
-            // Store the user's Google Authenticator secret in session for verification
             $_SESSION['google_auth_secret'] = $user['google_auth_secret'];
-
-            // Redirect to OTP verification page
+            
             header("Location: verify_login.php");
             exit;
         } else {
-            $error = "Password verification failed. Please check the entered password.";
+            throw new Exception('Invalid credentials');
         }
-    } else {
-        $error = "User  not found. Please check the username.";
+    } catch (Exception $e) {
+        $error = $e->getMessage();
     }
 }
+
+$csrf_token = generateCSRFToken();
 ?>
 
 <!DOCTYPE html>

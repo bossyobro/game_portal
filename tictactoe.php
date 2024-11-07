@@ -1,35 +1,61 @@
 <?php
+// tictactoe.php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+require_once 'auth.php';
+require_once 'db.php';
+require_once 'game_functions.php';
+
+checkAuth();
+
+$game = getGameDetails(2); // Tic Tac Toe game ID = 2
+$session_id = startGameSession($_SESSION['user_id'], 2);
+$top_scores = getTopScores(2);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="static/style.css">
-    <script src="tictactoe.js" defer></script>
 </head>
 <body>
-    <div class="tic-tac-toe-game">
-        <div id="gameBoard">
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-            <div class="cell" data-index="5"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="8"></div>
+    <div class="game-wrapper">
+        <h1><?php echo htmlspecialchars($game['name']); ?></h1>
+        <p><?php echo htmlspecialchars($game['description']); ?></p>
+        
+        <div class="tictactoe-game-container">
+            <div id="tictactoeBoard"></div>
+            <div id="result"></div>
+        </div>
+
+        <div class="game-controls">
+            <button onclick="startNewGame()">Start New Game</button>
+        </div>
+
+        <div class="leaderboard">
+            <h2>Top Scores</h2>
+            <table>
+                <tr>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+                <?php foreach ($top_scores as $score): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($score['username']); ?></td>
+                    <td><?php echo htmlspecialchars($score['score']); ?></td>
+                    <td><?php echo date('Y-m-d H:i', strtotime($score['created_at'])); ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
     </div>
-    <a href="dashboard.php">Back to Dashboard</a>
+
+    <script>
+        const session_id = <?php echo $session_id; ?>;
+    </script>
+    <script src="tictactoe.js"></script>
 </body>
 </html>
-

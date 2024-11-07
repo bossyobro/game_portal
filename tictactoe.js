@@ -1,3 +1,4 @@
+// tictactoe.js
 const board = ['', '', '', '', '', '', '', '', '']; // Game board
 let currentPlayer = 'X'; // Current player
 let gameActive = true; // Game state
@@ -10,14 +11,22 @@ function handleCellClick(index) {
 
     if (checkWinner()) {
         gameActive = false; // Stop the game if there's a winner
-        alert(`${currentPlayer} wins!`); // Notify the winner
+        document.getElementById('result').innerText = `${currentPlayer} wins!`;
+        recordScore(currentPlayer === 'X' ? 1 : 0); // Record score (1 for X win, 0 for O win)
+        return;
+    }
+
+    if (board.every(cell => cell !== '')) {
+        gameActive = false;
+        document.getElementById('result').innerText = "It's a draw!";
+        recordScore(0.5); // Record draw as 0.5 points
         return;
     }
 
     // Switch player
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     if (currentPlayer === 'O') {
-        aiMove(); // AI makes its move
+        setTimeout(aiMove, 500); // AI makes its move after a short delay
     }
 }
 
@@ -31,7 +40,8 @@ function aiMove() {
         board[move] = currentPlayer;
         if (checkWinner()) {
             renderBoard();
-            alert(`${currentPlayer} wins!`);
+            document.getElementById('result').innerText = `${currentPlayer} wins!`;
+            recordScore(0); // AI (O) wins, player gets 0 points
             gameActive = false;
             return;
         }
@@ -44,24 +54,25 @@ function aiMove() {
         board[move] = currentPlayer;
         renderBoard();
         if (checkWinner()) {
-            alert(`${currentPlayer} wins!`);
+            document.getElementById('result').innerText = `${currentPlayer} wins!`;
+            recordScore(0); // AI (O) wins, player gets 0 points
             gameActive = false;
+        } else if (board.every(cell => cell !== '')) {
+            document.getElementById('result').innerText = "It's a draw!";
+            recordScore(0.5); // Draw, player gets 0.5 points
+            gameActive = false;
+        } else {
+            currentPlayer = 'X'; // Switch back to the human player
         }
-        currentPlayer = 'X'; // Switch back to the human player
     }
 }
 
 // Function to check for a winner
 function checkWinner() {
     const winningCombinations = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
     ];
 
     for (const combination of winningCombinations) {
@@ -75,14 +86,49 @@ function checkWinner() {
 
 // Function to render the board
 function renderBoard() {
-    const cells = document.querySelectorAll('.cell'); // Assuming you have elements with the class 'cell'
-    cells.forEach((cell, index) => {
-        cell.textContent = board[index]; // Update each cell with the board state
+    const boardElement = document.getElementById('tictactoeBoard');
+    boardElement.innerHTML = ''; // Clear the board
+    board.forEach((cell, index) => {
+        const cellElement = document.createElement('div');
+        cellElement.className = 'cell';
+        cellElement.textContent = cell;
+        cellElement.addEventListener('click', () => handleCellClick(index));
+        boardElement.appendChild(cellElement);
     });
 }
 
-// Set up event listeners for each cell
-const cells = document.querySelectorAll('.cell');
-cells.forEach((cell, index) => {
-    cell.addEventListener('click', () => handleCellClick(index)); // Add click event to each cell
-});
+// Function to start a new game
+function startNewGame() {
+    board.fill('');
+    currentPlayer = 'X';
+    gameActive = true;
+    document.getElementById('result').innerText = '';
+    renderBoard();
+}
+
+// Function to record the score
+function recordScore(score) {
+    fetch('handle_game.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            session_id: session_id,
+            game_id: 2, // Tic Tac Toe game ID
+            score: score
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.achievements) {
+            alert('New achievements unlocked: ' + data.achievements.join(', '));
+        }
+        // Reload leaderboard after a short delay
+        setTimeout(() => location.reload(), 2000);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Initialize the game
+renderBoard();

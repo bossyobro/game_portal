@@ -2,28 +2,35 @@
 // add_score.php
 session_start();
 require 'db.php';
+require 'auth.php';
 
-// Check if the user is logged in and if a score is provided
-if (!isset($_SESSION['user_id']) || !isset($_POST['score'])) {
-    header("Location: login.php");
-    exit;
+checkAuth();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    try {
+        validateCSRFToken($_POST['csrf_token']);
+        
+        if (!isset($_POST['score']) || !isset($_POST['game_id'])) {
+            throw new Exception('Missing required parameters');
+        }
+
+        $user_id = $_SESSION['user_id'];
+        $score = filter_var($_POST['score'], FILTER_VALIDATE_INT);
+        $game_id = filter_var($_POST['game_id'], FILTER_VALIDATE_INT);
+
+        if ($score === false || $game_id === false) {
+            throw new Exception('Invalid score or game ID');
+        }
+
+        $conn = getDbConnection();
+        $stmt = $conn->prepare(
+            "INSERT INTO scores (user_id, game_id, score) VALUES (?, ?, ?)"
+        );
+        $stmt->execute([$user_id, $game_id, $score]);
+
+        echo json_encode(["status" => "success"]);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    }
 }
-
-// Retrieve user ID and score
-$user_id = $_SESSION['user_id'];
-$score = intval($_POST['score']);
-
-// Insert the score into the scores table
-try {
-    $conn = getDbConnection();
-    $stmt = $conn->prepare("INSERT INTO scores (user_id, game_id, score) VALUES (?, ?, ?)");
-    $stmt->execute([$user_id, $game_id, $score]);
-    
-    // Respond with a JSON message (useful if called via AJAX)
-    echo json_encode(["status" => "success", "message" => "Score added successfully."]);
-} catch (PDOException $e) {
-    // Log the error and respond with an error message
-    error_log("Database error: " . $e->getMessage());
-    echo json_encode(["status" => "error", "message" => "Failed to add score."]);
-}
-?>
