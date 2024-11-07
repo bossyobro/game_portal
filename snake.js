@@ -1,3 +1,17 @@
+function sendScore(score) {
+    fetch('add_score.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'score=' + score + '&game_id=1' // Snake game has ID 1
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => console.error('Error:', error));
+}
+
+
 const canvas = document.getElementById("snakeCanvas");
 if (!canvas) {
     console.log("canvas is no")
@@ -21,6 +35,20 @@ function changeDirection(event) {
     else if (key === 40 && direction !== "UP") direction = "DOWN";
 }
 
+function updateScoreDisplay() {
+    const scoreElement = document.getElementById("score");
+    if (scoreElement) {
+        scoreElement.textContent = "Score: " + score;
+    }
+}
+
+function gameOver() {
+    ctx.fillStyle = "white";
+    ctx.font = "30px Arial";
+    ctx.fillText("Game Over", canvasSize / 2 - 70, canvasSize / 2);
+    ctx.fillText("Score: " + score, canvasSize / 2 - 50, canvasSize / 2 + 40);
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvasSize, canvasSize);
 
@@ -38,8 +66,11 @@ function draw() {
     if (head.y < 0) head.y = canvasSize - boxSize;
     else if (head.y >= canvasSize) head.y = 0;
 
+    // When snake collides with itself
     if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
-        resetGame();
+        gameOver();
+        sendScore(score); // Send the score before resetting
+        setTimeout(resetGame, 2000);
         return;
     }
 
@@ -48,6 +79,7 @@ function draw() {
     if (head.x === food.x && head.y === food.y) {
         score++;
         food = spawnFood();
+        updateScoreDisplay();
     } else {
         snake.pop();
     }
@@ -76,6 +108,9 @@ function resetGame() {
     direction = "RIGHT";
     score = 0;
     food = spawnFood();
+    updateScoreDisplay();
 }
+
+
 
 setInterval(draw, 100);

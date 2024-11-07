@@ -7,6 +7,24 @@ require 'PHPGangsta/GoogleAuthenticator.php';
 $g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
+    
+    // Username validation
+    if (strlen($username) < 3 || strlen($username) > 20) {
+        $error = "Username must be between 3 and 20 characters";
+    }
+    
+    // Password strength validation
+    if (strlen($password) < 8 || 
+        !preg_match("#[0-9]+#", $password) || 
+        !preg_match("#[a-zA-Z]+#", $password)) {
+        $error = "Password must be at least 8 characters and include both letters and numbers";
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);

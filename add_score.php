@@ -16,8 +16,8 @@ $score = intval($_POST['score']);
 // Insert the score into the scores table
 try {
     $conn = getDbConnection();
-    $stmt = $conn->prepare("INSERT INTO scores (user_id, score) VALUES (?, ?)");
-    $stmt->execute([$user_id, $score]);
+    $stmt = $conn->prepare("INSERT INTO scores (user_id, game_id, score) VALUES (?, ?, ?)");
+    $stmt->execute([$user_id, $game_id, $score]);
     
     // Respond with a JSON message (useful if called via AJAX)
     echo json_encode(["status" => "success", "message" => "Score added successfully."]);

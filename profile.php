@@ -11,7 +11,19 @@ $conn = getDbConnection();
 $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $newEmail = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    if ($newEmail) {
+        $stmt = $conn->prepare("UPDATE users SET email = ? WHERE id = ?");
+        $stmt->execute([$newEmail, $_SESSION['user_id']]);
+    }
+}
 ?>
+<form method="POST">
+    <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
+    <button type="submit">Update Email</button>
+</form>
 
 <!DOCTYPE html>
 <html lang="en">
