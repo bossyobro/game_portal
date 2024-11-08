@@ -2,11 +2,9 @@
 // login.php
 session_start();
 require 'db.php';
-require 'auth.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        validateCSRFToken($_POST['csrf_token']);
         
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
         $password = $_POST['password'];
@@ -34,8 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = $e->getMessage();
     }
 }
-
-$csrf_token = generateCSRFToken();
 ?>
 
 <!DOCTYPE html>

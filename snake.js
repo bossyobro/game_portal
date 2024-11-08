@@ -51,14 +51,12 @@
             return;
         }
 
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
         fetch('add_score.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `score=${score}&game_id=${CONFIG.GAME_ID}${csrfToken ? `&csrf_token=${csrfToken}` : ''}`
+            body: `score=${score}&game_id=${CONFIG.GAME_ID}`
         })
         .then(response => {
             if (!response.ok) {
