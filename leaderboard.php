@@ -11,28 +11,26 @@ try {
     
     // Query for game play statistics
     $stmt = $conn->query("
-        SELECT 
-            g.id AS game_id,
-            g.name AS game_name, 
-            COALESCE(gpc.total_plays, 0) AS total_play_count,
-            COALESCE(MAX(s.score), 0) AS highest_score,
-            (SELECT u.username 
-             FROM scores max_s 
-             JOIN users u ON max_s.user_id = u.id 
-             WHERE max_s.game_id = g.id 
-             ORDER BY max_s.score DESC 
-             LIMIT 1) AS top_player
-        FROM 
-            games g
-        LEFT JOIN 
-            game_play_counts gpc ON g.id = gpc.game_id
-        LEFT JOIN 
-            scores s ON g.id = s.game_id
-        GROUP BY 
-            g.id, g.name, gpc.total_plays
-        ORDER BY 
-            total_play_count DESC
-    ");
+    SELECT 
+        g.id AS game_id,
+        g.name AS game_name, 
+        COUNT(s.id) AS total_play_count,
+        COALESCE(MAX(s.score), 0) AS highest_score,
+        (SELECT u.username 
+         FROM scores max_s 
+         JOIN users u ON max_s.user_id = u.id 
+         WHERE max_s.game_id = g.id 
+         ORDER BY max_s.score DESC 
+         LIMIT 1) AS top_player
+    FROM 
+        games g
+    LEFT JOIN 
+        scores s ON g.id = s.game_id
+    GROUP BY 
+        g.id, g.name
+    ORDER BY 
+        total_play_count DESC
+");
     $gameStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Query for detailed leaderboard
