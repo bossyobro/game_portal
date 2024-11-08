@@ -1,6 +1,10 @@
 <?php
 session_start();
 require 'db.php';
+require 'auth.php';
+
+// Check authentication
+checkAuth();
 
 try {
     $conn = getDbConnection();
@@ -10,7 +14,7 @@ try {
         SELECT 
             g.id AS game_id,
             g.name AS game_name, 
-            COALESCE(SUM(s.play_count), 0) AS total_play_count,
+            COALESCE(gpc.total_plays, 0) AS total_play_count,
             COALESCE(MAX(s.score), 0) AS highest_score,
             (SELECT u.username 
              FROM scores max_s 
@@ -21,9 +25,11 @@ try {
         FROM 
             games g
         LEFT JOIN 
+            game_play_counts gpc ON g.id = gpc.game_id
+        LEFT JOIN 
             scores s ON g.id = s.game_id
         GROUP BY 
-            g.id, g.name
+            g.id, g.name, gpc.total_plays
         ORDER BY 
             total_play_count DESC
     ");
@@ -35,7 +41,7 @@ try {
             g.name AS game_name,
             u.username,
             MAX(s.score) AS best_score,
-            SUM(s.play_count) AS user_play_count
+            COUNT(s.id) AS user_play_count
         FROM 
             scores s
         JOIN 
