@@ -33,27 +33,6 @@ try {
 ");
     $gameStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Query for detailed leaderboard
-    $stmt = $conn->query("
-        SELECT 
-            g.name AS game_name,
-            u.username,
-            MAX(s.score) AS best_score,
-            COUNT(s.id) AS user_play_count
-        FROM 
-            scores s
-        JOIN 
-            users u ON s.user_id = u.id
-        JOIN 
-            games g ON s.game_id = g.id
-        GROUP BY 
-            g.name, u.username
-        ORDER BY 
-            g.name, best_score DESC
-        LIMIT 20
-    ");
-    $leaderboard = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     // Prepare data for the pie chart
     $labels = [];
     $data = [];
@@ -119,31 +98,6 @@ try {
                     <?php endforeach; ?>
                 </tbody>
             </table>
-
-            <h3>Detailed Leaderboard</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Game</th>
-                        <th>Player</th>
-                        <th>Best Score</th>
-                        <th>Times Played</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($leaderboard as $entry): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($entry['game_name']); ?></td>
-                            <td><?php echo htmlspecialchars($entry['username']); ?></td>
-                            <td><?php echo htmlspecialchars($entry['best_score']); ?></td>
-                            <td><?php echo htmlspecialchars($entry['user_play_count']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
-    </div>
-
     <?php if (!empty($gameStats)): ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
