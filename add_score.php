@@ -30,8 +30,10 @@ try {
         throw new Exception('Score out of valid range');
     }
 
-    // Optional: Rate limiting (basic implementation)
+    // Get database connection
     $conn = getDbConnection();
+
+    // Optional: Rate limiting (basic implementation)
     $stmt = $conn->prepare("
         SELECT COUNT(*) as score_count 
         FROM scores 
@@ -44,11 +46,15 @@ try {
         throw new Exception('Too many score submissions');
     }
 
-    // Insert score
+    // Insert or update score with play count tracking
     $stmt = $conn->prepare(
-        "INSERT INTO scores (user_id, game_id, score, created_at) VALUES (?, ?, ?, NOW())"
+        "INSERT INTO scores (user_id, game_id, score, play_count, created_at) 
+        VALUES (?, ?, ?, 1, NOW()) 
+        ON DUPLICATE KEY UPDATE 
+        play_count = play_count + 1, 
+        score = GREATEST(score, ?)"
     );
-    $stmt->execute([$_SESSION['user_id'], $game_id, $score]);
+    $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
 
     // Optional: Update user's best score
     $stmt = $conn->prepare("
@@ -59,10 +65,20 @@ try {
     );
     $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
 
+    // Optional: Update global game play count
+    $stmt = $conn->prepare("
+        INSERT INTO game_play_counts (game_id, total_plays) 
+        VALUES (?, 1) 
+        ON DUPLICATE KEY UPDATE 
+        total_plays = total_plays + 1"
+    );
+    $stmt->execute([$game_id]);
+
     // Respond with success
     echo json_encode([
         'status' => 'success', 
-        'message' => 'Score recorded successfully'
+        'message' => 'Score recorded successfully',
+        'play_count' => true // Indicates successful play count increment
     ]);
 
 } catch (Exception $e) {

@@ -44,19 +44,22 @@
         }
     }
 
-    // Send score to server
     function sendScore() {
         if (!session_id) {
             logError('Session ID not set');
             return;
         }
-
-        fetch('add_score.php', {
+    
+        fetch('handle_game.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `score=${score}&game_id=${CONFIG.GAME_ID}`
+            body: JSON.stringify({
+                session_id: session_id,
+                game_id: CONFIG. GAME_ID,
+                score: score
+            })
         })
         .then(response => {
             if (!response.ok) {
@@ -66,6 +69,7 @@
         })
         .catch(error => logError(`Score submission error: ${error.message}`));
     }
+    
 
     // Handle game over
     function handleGameOver() {

@@ -1,5 +1,4 @@
 <?php
-// snake.php
 session_start();
 require_once 'auth.php';
 require_once 'db.php';
@@ -20,12 +19,9 @@ try {
 
     $top_scores = getTopScores(1);
 } catch (Exception $e) {
-    // Log error
     error_log($e->getMessage());
-    // Redirect or show error page
     die("An error occurred: " . $e->getMessage());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -55,13 +51,11 @@ try {
                 <tr>
                     <th>Player</th>
                     <th>Score</th>
-                    <th>Date</th>
                 </tr>
                 <?php foreach ($top_scores as $score): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($score['username']); ?></td>
                     <td><?php echo htmlspecialchars($score['score']); ?></td>
-                    <td><?php echo date('Y-m-d H:i', strtotime($score['created_at'])); ?></td>
                 </tr>
                 <?php endforeach; ?>
             </table>

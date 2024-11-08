@@ -1,6 +1,4 @@
 <?php
-// game_functions.php
-
 function startGameSession($user_id, $game_id) {
     $conn = getDbConnection();
     try {
@@ -10,68 +8,6 @@ function startGameSession($user_id, $game_id) {
     } catch (PDOException $e) {
         error_log("Start game session error: " . $e->getMessage());
         return false;
-    }
-}
-
-function endGameSession($session_id, $score) {
-    $conn = getDbConnection();
-    try {
-        $stmt = $conn->prepare("UPDATE game_sessions SET 
-            end_time = CURRENT_TIMESTAMP, 
-            duration = TIMESTAMPDIFF(SECOND, start_time, CURRENT_TIMESTAMP)
-            WHERE id = ?");
-        $stmt->execute([$session_id]);
-    } catch (PDOException $e) {
-        error_log("End game session error: " . $e->getMessage());
-    }
-}
-
-function recordScore($user_id, $game_id, $score) {
-    $conn = getDbConnection();
-    try {
-        $stmt = $conn->prepare("INSERT INTO scores (user_id, game_id, score) VALUES (?, ?, ?)");
-        $stmt->execute([$user_id, $game_id, $score]);
-        return $conn->lastInsertId();
-    } catch (PDOException $e) {
-        error_log("Record score error: " . $e->getMessage());
-        return false;
-    }
-}
-
-function checkAchievements($user_id, $game_id, $score) {
-    $conn = getDbConnection();
-    try {
-        $stmt = $conn->prepare("SELECT achievement_name FROM user_achievements WHERE user_id = ? AND game_id = ?");
-        $stmt->execute([$user_id, $game_id]);
-        $existing = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        
-        $achievements = [
-            'snake' => [
-                ['name' => 'Beginner', 'condition' => $score >= 10],
-                ['name' => 'Intermediate', 'condition' => $score >= 50],
-                ['name' => 'Expert', 'condition' => $score >= 100],
-            ],
-            'tictactoe' => [
-                ['name' => 'First Win', 'condition' => $score > 0],
-                ['name' => 'Win Streak', 'condition' => $score >= 3],
-            ]
-        ];
-        
-        $game_type = $game_id == 1 ? 'snake' : 'tictactoe';
-        $new_achievements = [];
-        
-        foreach ($achievements[$game_type] as $achievement) {
-            if ($achievement['condition'] && !in_array($achievement['name'], $existing)) {
-                $stmt = $conn->prepare("INSERT INTO user_achievements (user_id, game_id, achievement_name) VALUES (?, ?, ?)");
-                $stmt->execute([$user_id, $game_id, $achievement['name']]);
-                $new_achievements[] = $achievement['name'];
-            }
-        }
-        
-        return $new_achievements;
-    } catch (PDOException $e) {
-        error_log("Check achievements error: " . $e->getMessage());
-        return [];
     }
 }
 
