@@ -5,11 +5,26 @@ require_once 'auth.php';
 require_once 'db.php';
 require_once 'game_functions.php';
 
-checkAuth();
+try {
+    checkAuth();
 
-$game = getGameDetails(1); // Snake game ID = 1
-$session_id = startGameSession($_SESSION['user_id'], 1);
-$top_scores = getTopScores(1);
+    $game = getGameDetails(1); // Snake game ID = 1
+    if (!$game) {
+        throw new Exception("Game not found");
+    }
+
+    $session_id = startGameSession($_SESSION['user_id'], 1);
+    if (!$session_id) {
+        throw new Exception("Failed to start game session");
+    }
+
+    $top_scores = getTopScores(1);
+} catch (Exception $e) {
+    // Log error
+    error_log($e->getMessage());
+    // Redirect or show error page
+    die("An error occurred: " . $e->getMessage());
+}
 
 ?>
 
@@ -54,7 +69,7 @@ $top_scores = getTopScores(1);
     </div>
 
     <script>
-        const session_id = <?php echo $session_id; ?>;
+       window.session_id = <?php echo json_encode($session_id); ?>;
     </script>
     <script src="snake.js"></script>
 </body>

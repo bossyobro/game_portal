@@ -53,8 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $username;
             $_SESSION['google_auth_secret'] = $secret;
             $_SESSION['qrCodeUrl'] = $g->getQRCodeGoogleUrl($username, $secret, "GamePortal");
-            $_SESSION['authenticated'] = false; // Set to false initially, will be set to true after 2FA verification
-            // Redirect to 2FA verification
             header("Location: verify_2fa.php");
             exit;
         }

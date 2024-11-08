@@ -28,12 +28,10 @@ function recordScore($user_id, $game_id, $score) {
 function checkAchievements($user_id, $game_id, $score) {
     $conn = getDbConnection();
     
-    // Get existing achievements
     $stmt = $conn->prepare("SELECT achievement_name FROM user_achievements WHERE user_id = ? AND game_id = ?");
     $stmt->execute([$user_id, $game_id]);
     $existing = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
-    // Define achievements
     $achievements = [
         'snake' => [
             ['name' => 'Beginner', 'condition' => $score >= 10],
@@ -47,13 +45,17 @@ function checkAchievements($user_id, $game_id, $score) {
     ];
     
     $game_type = $game_id == 1 ? 'snake' : 'tictactoe';
+    $new_achievements = [];
     
     foreach ($achievements[$game_type] as $achievement) {
         if ($achievement['condition'] && !in_array($achievement['name'], $existing)) {
             $stmt = $conn->prepare("INSERT INTO user_achievements (user_id, game_id, achievement_name) VALUES (?, ?, ?)");
             $stmt->execute([$user_id, $game_id, $achievement['name']]);
+            $new_achievements[] = $achievement['name'];
         }
     }
+    
+    return $new_achievements;
 }
 
 function getGameDetails($game_id) {

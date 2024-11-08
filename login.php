@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $username;
-            $_SESSION['authenticated'] = false;
             $_SESSION['google_auth_secret'] = $user['google_auth_secret'];
             
             header("Location: verify_login.php");
