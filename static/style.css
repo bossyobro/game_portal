@@ -344,24 +344,18 @@ th {
 }
 
 /* Game-specific styles */
-.tic-tac-toe-game {
-    background-color: #2d2d2d;
-    padding: 20px;
-    border-radius: 10px;
+#tictactoeBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
     max-width: 300px;
     margin: 0 auto;
 }
 
-#gameBoard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-}
-
 .cell {
+    aspect-ratio: 1;
     background-color: #3d3d3d;
     border: 2px solid #00b4d8;
-    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -374,7 +368,6 @@ th {
 .cell:hover {
     background-color: #4d4d4d;
 }
-
 /* Footer */
 footer {
     background-color: #2d2d2d;
