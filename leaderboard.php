@@ -9,19 +9,12 @@ checkAuth();
 try {
     $conn = getDbConnection();
     
-    // Query for game play statistics
+    // Query for game play statistics based solely on play count
     $stmt = $conn->query("
     SELECT 
         g.id AS game_id,
         g.name AS game_name, 
-        COUNT(s.id) AS total_play_count,
-        COALESCE(MAX(s.score), 0) AS highest_score,
-        (SELECT u.username 
-         FROM scores max_s 
-         JOIN users u ON max_s.user_id = u.id 
-         WHERE max_s.game_id = g.id 
-         ORDER BY max_s.score DESC 
-         LIMIT 1) AS top_player
+        COALESCE(SUM(s.play_count), 0) AS total_play_count
     FROM 
         games g
     LEFT JOIN 
@@ -30,7 +23,7 @@ try {
         g.id, g.name
     ORDER BY 
         total_play_count DESC
-");
+    ");
     $gameStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Prepare data for the pie chart
@@ -62,7 +55,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Statistics and Leaderboard</title>
+    <title>Game Play Statistics</title>
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -76,28 +69,9 @@ try {
             <div class="chart-container">
                 <canvas id="gamePlayChart"></canvas>
             </div>
+        <?php endif; ?>
+    </div>
 
-            <h3>Game Overview</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Game</th>
-                        <th>Total Plays</th>
-                        <th>Highest Score</th>
-                        <th>Top Player</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($gameStats as $stat): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($stat['game_name']); ?></td>
-                            <td><?php echo htmlspecialchars($stat['total_play_count']); ?></td>
-                            <td><?php echo htmlspecialchars($stat['highest_score']); ?></td>
-                            <td><?php echo htmlspecialchars($stat['top_player'] ?? 'N/A'); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
     <?php if (!empty($gameStats)): ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {

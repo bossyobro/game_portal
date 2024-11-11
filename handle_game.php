@@ -7,17 +7,21 @@ require_once 'game_functions.php';
 header('Content-Type: application/json');
 
 try {
+    // Check if the user is authenticated
     if (!isset($_SESSION['user_id']) || !isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
         throw new Exception('Unauthorized access', 403);
     }
 
+    // Validate the request method
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Invalid request method', 405);
     }
 
+    // Get the input data
     $input = json_decode(file_get_contents('php://input'), true);
 
-    if (!isset($input['game_id']) || !isset($input['score']) || !isset($input['session_id'])) {
+    // Validate input parameters
+    if (!isset($input ['game_id']) || !isset($input['score']) || !isset($input['session_id'])) {
         throw new Exception('Missing required parameters');
     }
 
@@ -42,10 +46,13 @@ try {
 
     // Record or update score
     $stmt = $conn->prepare("
-        INSERT INTO scores (user_id, game_id, score) 
-        VALUES (?, ?, ?)
+        INSERT INTO scores (user_id, game_id, score, play_count) 
+        VALUES (?, ?, ?, 1) 
+        ON DUPLICATE KEY UPDATE 
+        score = GREATEST(score, ?), 
+        play_count = play_count + 1
     ");
-    $stmt->execute([$_SESSION['user_id'], $game_id, $score]);
+    $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
 
     echo json_encode([
         'success' => true, 
