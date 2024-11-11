@@ -104,10 +104,11 @@ function startNewGame() {
     gameActive = true;
     document.getElementById('result').innerText = '';
     renderBoard();
-}
 
-// Function to record the score
-function recordScore(score) {
+    // Increment play count
+    incrementPlayCount();
+}
+function incrementPlayCount() {
     fetch('handle_game.php', {
         method: 'POST',
         headers: {
@@ -115,16 +116,16 @@ function recordScore(score) {
         },
         body: JSON.stringify({
             game_id: 2, // Tic Tac Toe game ID
-            score: score
+            increment: true
         })
     })
     .then(response => response.json())
     .then(data => {
-        if (data.achievements) {
-            alert('New achievements unlocked: ' + data.achievements.join(', '));
+        if (data.success) {
+            console.log('Play count incremented successfully');
+        } else {
+            console.error('Failed to increment play count:', data.error);
         }
-        // Reload leaderboard after a short delay
-        setTimeout(() => location.reload(), 2000);
     })
     .catch(error => console.error('Error:', error));
 }
