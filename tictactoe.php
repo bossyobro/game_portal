@@ -1,15 +1,13 @@
 <?php
-// tictactoe.php
 session_start();
 require_once 'auth.php';
 require_once 'db.php';
 require_once 'game_functions.php';
 
-checkAuth();
+
+checkAuth(); 
 
 $game = getGameDetails(2); // Tic Tac Toe game ID = 2
-$session_id = startGameSession($_SESSION['user_id'], 2);
-$top_scores = getTopScores(2);
 
 ?>
 
@@ -34,27 +32,11 @@ $top_scores = getTopScores(2);
             <button onclick="startNewGame()">Start New Game</button>
         </div>
 
-        <div class="leaderboard">
-            <h2>Top Scores</h2>
-            <table>
-                <tr>
-                    <th>Player</th>
-                    <th>Score</th>
-                    <th>Date</th>
-                </tr>
-                <?php foreach ($top_scores as $score): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($score['username']); ?></td>
-                    <td><?php echo htmlspecialchars($score['score']); ?></td>
-                    <td><?php echo date('Y-m-d H:i', strtotime($score['created_at'])); ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
+        <!-- Removed the leaderboard section completely -->
     </div>
 
     <script>
-        const session_id = <?php echo $session_id; ?>;
+        // No session_id needed
     </script>
     <script src="tictactoe.js"></script>
 </body>

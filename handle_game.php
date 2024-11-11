@@ -1,14 +1,11 @@
 <?php
-session_start();
+session_start(); // Start the session to access session variables
 require_once 'db.php';
-require_once 'auth.php';
-require_once 'game_functions.php';
-
 header('Content-Type: application/json');
 
 try {
     // Check if the user is authenticated
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    if (!isset($_SESSION['user_id'])) {
         throw new Exception('Unauthorized access', 403);
     }
 
@@ -34,16 +31,17 @@ try {
 
     $conn = getDbConnection();
 
-    // Update game session directly without using session_id
-    // If you are not tracking sessions, you might want to skip this part.
-    // Just record the score directly
+    // Use the user ID from the session
+    $user_id = $_SESSION['user_id'];
+
+    // Record the score in the database
     $stmt = $conn->prepare("
         INSERT INTO scores (user_id, game_id, score) 
         VALUES (?, ?, ?) 
         ON DUPLICATE KEY UPDATE 
         score = GREATEST(score, ?)
     ");
-    $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
+    $stmt->execute([$user_id, $game_id, $score, $score]);
 
     echo json_encode([
         'success' => true, 
@@ -51,7 +49,7 @@ try {
     ]);
 
 } catch (Exception $e) {
-    error_log('Game session error: ' . $e->getMessage());
+    error_log('Score submission error: ' . $e->getMessage());
     http_response_code($e->getCode() ?: 400);
     echo json_encode([
         'success' => false, 

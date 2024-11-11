@@ -114,7 +114,6 @@ function recordScore(score) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            session_id: session_id,
             game_id: 2, // Tic Tac Toe game ID
             score: score
         })
