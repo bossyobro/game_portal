@@ -12,11 +12,6 @@ try {
         throw new Exception("Game not found");
     }
 
-    $session_id = startGameSession($_SESSION['user_id'], 1);
-    if (!$session_id) {
-        throw new Exception("Failed to start game session");
-    }
-
     $top_scores = getTopScores(1);
 } catch (Exception $e) {
     error_log($e->getMessage());
@@ -43,6 +38,8 @@ try {
 
         <div class="game-controls">
             <button onclick="startGame()">Start New Game</button>
+            <!-- Button to go back to the dashboard -->
+            <button onclick="window.location.href='dashboard.php'">Back to Dashboard</button>
         </div>
 
         <div class="leaderboard">
@@ -63,7 +60,8 @@ try {
     </div>
 
     <script>
-       window.session_id = <?php echo json_encode($session_id); ?>;
+        // Remove the session_id since it's no longer needed
+        // window.session_id = <?php echo json_encode($session_id); ?>; // Remove this line
     </script>
     <script src="snake.js"></script>
 </body>

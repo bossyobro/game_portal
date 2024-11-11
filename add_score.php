@@ -28,24 +28,19 @@ try {
     // Get database connection
     $conn = getDbConnection();
 
-    // Insert or update score with play count tracking
+    // Insert or update score without updating play count
     $stmt = $conn->prepare(
-        "INSERT INTO scores (user_id, game_id, score, play_count, created_at) 
-        VALUES (?, ?, ?, 1, NOW()) 
+        "INSERT INTO scores (user_id, game_id, score, created_at) 
+        VALUES (?, ?, ?, NOW()) 
         ON DUPLICATE KEY UPDATE 
-        play_count = play_count + 1, 
         score = GREATEST(score, ?)"
     );
-    $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
-
-
     $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
 
     // Respond with success
     echo json_encode([
         'status' => 'success', 
-        'message' => 'Score recorded successfully',
-        'play_count' => true // Indicates successful play count increment
+        'message' => 'Score recorded successfully'
     ]);
 
 } catch (Exception $e) {

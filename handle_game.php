@@ -21,42 +21,33 @@ try {
     $input = json_decode(file_get_contents('php://input'), true);
 
     // Validate input parameters
-    if (!isset($input ['game_id']) || !isset($input['score']) || !isset($input['session_id'])) {
+    if (!isset($input['game_id']) || !isset($input['score'])) {
         throw new Exception('Missing required parameters');
     }
 
     $game_id = filter_var($input['game_id'], FILTER_VALIDATE_INT);
     $score = filter_var($input['score'], FILTER_VALIDATE_INT);
-    $session_id = filter_var($input['session_id'], FILTER_VALIDATE_INT);
 
-    if ($game_id === false || $score === false || $session_id === false) {
+    if ($game_id === false || $score === false) {
         throw new Exception('Invalid input parameters');
     }
 
     $conn = getDbConnection();
 
-    // Update game session
+    // Update game session directly without using session_id
+    // If you are not tracking sessions, you might want to skip this part.
+    // Just record the score directly
     $stmt = $conn->prepare("
-        UPDATE game_sessions 
-        SET end_time = NOW(), 
-            final_score = ? 
-        WHERE id = ? AND user_id = ?
-    ");
-    $stmt->execute([$score, $session_id, $_SESSION['user_id']]);
-
-    // Record or update score
-    $stmt = $conn->prepare("
-        INSERT INTO scores (user_id, game_id, score, play_count) 
-        VALUES (?, ?, ?, 1) 
+        INSERT INTO scores (user_id, game_id, score) 
+        VALUES (?, ?, ?) 
         ON DUPLICATE KEY UPDATE 
-        score = GREATEST(score, ?), 
-        play_count = play_count + 1
+        score = GREATEST(score, ?)
     ");
     $stmt->execute([$_SESSION['user_id'], $game_id, $score, $score]);
 
     echo json_encode([
         'success' => true, 
-        'message' => 'Game session completed'
+        'message' => 'Game score recorded successfully'
     ]);
 
 } catch (Exception $e) {

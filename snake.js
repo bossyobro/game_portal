@@ -8,7 +8,7 @@
     };
 
     // Game state variables
-    let canvas, ctx, snake, direction, food, score, session_id, gameLoop;
+    let canvas, ctx, snake, direction, food, score, gameLoop;
 
     // Utility function to log errors
     function logError(message) {
@@ -45,19 +45,14 @@
     }
 
     function sendScore() {
-        if (!session_id) {
-            logError('Session ID not set');
-            return;
-        }
-    
+        // Send score without session_id
         fetch('handle_game.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                session_id: session_id,
-                game_id: CONFIG. GAME_ID,
+                game_id: CONFIG.GAME_ID,
                 score: score
             })
         })
@@ -70,7 +65,6 @@
         .catch(error => logError(`Score submission error: ${error.message}`));
     }
     
-
     // Handle game over
     function handleGameOver() {
         // Stop the game loop
@@ -86,32 +80,8 @@
         // Send final score
         sendScore();
 
-        // Submit game session
-        fetch('handle_game.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                session_id: session_id,
-                game_id: CONFIG.GAME_ID,
-                score: score
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Game submission failed');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.achievements && data.achievements.length) {
-                alert(`New achievements unlocked: ${data.achievements.join(', ')}`);
-            }
-            // Optionally reload or reset game after a delay
-            setTimeout(resetGame, 2000);
-        })
-        .catch(error => logError(`Game submission error: ${error.message}`));
+        // Optionally reload or reset game after a delay
+        setTimeout(resetGame, 2000);
     }
 
     // Game draw and update logic
@@ -166,7 +136,7 @@
     function changeDirection(event) {
         const key = event.keyCode;
         const directionMap = {
-            37: "LEFT",
+            37: "LEFT ",
             38: "UP",
             39: "RIGHT",
             40: "DOWN"
@@ -205,8 +175,8 @@
 
     // Initialize game
     function initGame() {
-        // Validate canvas and session
-        if (!initCanvas() || !session_id) {
+        // Validate canvas
+        if (!initCanvas()) {
             logError("Game initialization failed");
             return;
         }
@@ -218,16 +188,9 @@
         document.addEventListener("keydown", changeDirection);
     }
 
-    // Wait for DOM and session_id
+    // Wait for DOM to load
     document.addEventListener('DOMContentLoaded', () => {
-        // Get session_id from global scope (set in snake.php)
-        session_id = window.session_id;
-        
-        if (session_id) {
-            initGame();
-        } else {
-            logError('Session ID not found');
-        }
+        initGame();
     });
 
     // Expose global functions if needed
