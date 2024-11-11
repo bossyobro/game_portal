@@ -7,10 +7,10 @@ require 'PHPGangsta/GoogleAuthenticator.php';
 $g = new PHPGangsta_GoogleAuthenticator();
 $error = '';
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
+    $email = trim($_POST['email']); // Get email from POST data
     
     // Username validation
     if (strlen($username) < 3 || strlen($username) > 20) {
@@ -23,11 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         !preg_match("#[a-zA-Z]+#", $password)) {
         $error = "Password must be at least 8 characters and include both letters and numbers";
     }
+
+    // Email validation
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format";
+    }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)) {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $email = $_POST['email']; // Get email again for insertion
     
     try {
         $conn = getDbConnection();
@@ -41,9 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Generate a secret for Google Authenticator
             $secret = $g->createSecret();
             
-            // Store user with the secret
-            $stmt = $conn->prepare("INSERT INTO users (username, password, google_auth_secret) VALUES (?, ?, ?)");
-            $stmt->execute([$username, $password, $secret]);
+            // Store user with the secret, including email
+            $stmt = $conn->prepare("INSERT INTO users (username, password, email, google_auth_secret) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$username, $password, $email, $secret]);
             
             // Get the user ID
             $userId = $conn->lastInsertId();
@@ -62,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,6 +85,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
@@ -94,5 +103,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         <p>Already have an account? <a href="login.php">Login here</a>.</p>
     </div>
-</body>
-</html>
+</body
