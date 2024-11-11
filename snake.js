@@ -136,7 +136,7 @@
     function changeDirection(event) {
         const key = event.keyCode;
         const directionMap = {
-            37: "LEFT ",
+            37: "LEFT",
             38: "UP",
             39: "RIGHT",
             40: "DOWN"
